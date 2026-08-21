@@ -5,7 +5,7 @@ LogiFinance é um micro-SaaS de gestão financeira para transportadoras. Backend
 
 ## Stack
 - Backend: Python 3.12 / FastAPI / SQLAlchemy 2 / PostgreSQL 16 / Alembic / Pydantic v2 / OCR (Tesseract) / JWT
-- Frontend: Next.js 14 (App Router) / TypeScript / TailwindCSS / TanStack Query v5 / Zustand / Recharts
+- Frontend: Next.js 14 (App Router) / TypeScript / TailwindCSS / TanStack Query v5 / Zustand / Recharts / Vitest
 - Infra: Docker Compose (postgres:16-alpine + backend + frontend)
 - Multi-tenancy: `company_id` em todas as tabelas de negócio
 
@@ -19,32 +19,35 @@ logifinance/
 │   │   ├── models/         # SQLAlchemy models
 │   │   ├── schemas/        # Pydantic schemas
 │   │   ├── services/       # Lógica de negócio
+│   │   ├── utils/          # file_upload.py
 │   │   └── main.py         # Entrypoint com lifespan (create_all)
-│   ├── tests/              # 23 testes passando
+│   ├── tests/              # 64 testes passando (8 arquivos)
 │   ├── alembic/            # Migrations
 │   ├── requirements.txt
 │   └── Dockerfile
 ├── frontend/
 │   ├── app/                # App Router pages
 │   │   ├── (auth)/         # login, register
-│   │   ├── (dashboard)/    # dashboard, frota, viagens, recibos, manutencao, configuracoes
+│   │   ├── (dashboard)/    # dashboard, frota, viagens, custos, fluxo-caixa, recibos, manutencao, notificacoes, configuracoes
 │   │   └── layout.tsx
 │   ├── components/
-│   │   ├── ui/             # Reutilizáveis (button, dialog, table, badge, card, input, label, select)
-│   │   ├── layout/         # Sidebar, Topbar
-│   │   └── dashboard/      # KpiCard, CostAlertCard, WhatsAppOcrPanel
+│   │   ├── ui/             # Reutilizáveis (button, dialog, table, badge, card, input, label, select, pagination, toaster)
+│   │   ├── layout/         # Sidebar, Topbar, nav
+│   │   └── dashboard/      # KpiCard, CostAlertCard, CostDonutChart, CostTrendChart, RecentTripsTable, VehiclePerformanceTable, WhatsAppOcrPanel
 │   ├── hooks/              # useAuth.ts
 │   ├── stores/             # authStore.ts (Zustand)
 │   ├── lib/                # api.ts (axios), utils.ts
 │   ├── types/              # index.ts (types compartilhados)
 │   ├── tailwind.config.ts
 │   ├── package.json
+│   ├── vitest.config.ts    # Configuração Vitest
+│   ├── vitest.setup.ts     # Setup Vitest (@testing-library/jest-dom)
 │   └── Dockerfile
 ├── docker-compose.yml
 └── AGENTS.md               # Este arquivo
 ```
 
-## O que JA foi feito (NÃO refazer)
+## O que JÁ foi feito (NÃO refazer)
 
 ### Backend - Corrigido:
 - `deps.py`: `db_session` usa `Depends(get_db)` em vez de chamar `get_db()` direto (era causa raiz de "no such table")
@@ -57,45 +60,79 @@ logifinance/
 - `__init__.py` em `app/api/v1/`
 - `maintenance.py` e `cost_entry.py`: relationships com back_populates
 - `main.py`: lifespan com `Base.metadata.create_all`
-- `.env`: PostgreSQL via Docker
+- `.env`: PostgreSQL via Docker, SECRET_KEY gerado
+- `trips.py`, `receipts.py`, `maintenance.py`: `func` adicionado ao import (faltava — causaria NameError)
+- `companies.py`: `db.commit()` → `db.flush()` (violava regra)
 
-### Backend - Testes corrigidos:
-- `test_margin_alerts.py`: imports corrigidos, full_name "O" → "Owner", cost 8500 → 9500
-- `test_receipts_ocr.py`: assertivas Decimal corrigidas, sender_phone "+5511" → "+5511999990000"
-- `conftest.py`: `get_settings.cache_clear()`, StaticPool, env vars antes dos imports
+### Backend - Funcionalidades completas:
+- **Auth**: register, login, refresh (`/auth/refresh`), me (`/auth/me`) — JWT access + refresh tokens
+- **Paginação**: `PaginatedResponse[T]` (items, total, page, page_size, total_pages) em TODOS os GETs de listagem
+- **Filtros**: vehicles (status), drivers (q), trips (q, status, vehicle_id, date_from, date_to), costs (vehicle_id, trip_id, category, date_from, date_to), receipts (status, vehicle_id), maintenance (vehicle_id, type), alerts (include_resolved)
+- **Export CSV**: `GET /costs/export/csv` e `GET /trips/export/csv` (csv stdlib, text/csv, Content-Disposition)
+- **Multi-tenancy**: company_id em toda tabela de negócio, validado em GET/POST/PATCH/DELETE
+- **Companies**: `GET /companies/me`, `PATCH /companies/me`, `GET /companies/me/users`
+- **Alerts**: list + `POST /alerts/{id}/resolve`, geração automática em `trips/{id}/complete` quando margem < esperado
+- **WhatsApp OCR**: simulate + webhook endpoints, confirm/reject receipts
+- **Maintenance**: CRUD + auto-gera CostEntry
+
+### Backend - Testes (8 arquivos, 64 testes):
+- `test_auth.py` (7 testes): register, login, me, refresh token (3 cenários), duplicate, edge cases
+- `test_vehicles.py` (5 testes): CRUD, search, plate uniqueness, tenant isolation
+- `test_trips.py` (4 testes): create+complete, healthy trip sem alert, export CSV, export tenant isolation
+- `test_costs.py` (9 testes): CRUD, paginação, filtros (categoria/data/veículo), breakdown, CSV export, tenant isolation
+- `test_margin_alerts.py` (5 testes): _safe_margin, dashboard KPIs, vehicle performance, alerts count/resolve
+- `test_receipts_ocr.py` (7 testes): OCR helpers, simulate, confirm/reject
+- `test_pagination_filters.py` (18 testes): paginação em todas listagens, filtros, maintenance CRUD+cost auto, auth edge cases
+- `test_tenant_isolation.py` (9 testes): isolamento company_id em drivers/trips/receipts/maintenance/alerts (list + get-by-id)
 
 ### Frontend - Corrigido:
 - `register/page.tsx`: usa dados reais do response do backend
-- `Sidebar.tsx`: logout com `authStore.logout()` + navegação
-- `Topbar.tsx`: links reais, `<Link>` em vez de `<a>`
+- `Sidebar.tsx`: logout com `authStore.logout()` + navegação, links reais
+- `Topbar.tsx`: links reais, `<Link>` em vez de `<a>`, sino linka para `/notificacoes`
 - `dialog.tsx`: acessibilidade (Escape, focus trap, aria-modal)
-- `dashboard/page.tsx`: upload com react-dropzone, KPI hardcoded removido, link morto removido
+- `dashboard/page.tsx`: upload com react-dropzone, KPI hardcoded removido, link morto removido, Recharts BarChart por categoria
 - `globals.css`: Google Fonts `@import` removido, `text-on-primary` → `text-white`, spacing tokens
 - `layout.tsx`: Material Symbols via `<link>` no `<head>`
 - `tailwind.config.ts`: spacing xs/sm/md/lg/xl
 - `types/index.ts`: `MaintenanceType` e `CostCategory` exports
 - `recibos/page.tsx`: `confirm()` → `window.confirm()` (shadowed por useMutation)
-- `package.json`: 6 deps não usados removidos
-- `loading.tsx`: 6 skeleton pages
+- `package.json`: 6 deps não usados removidos, Vitest deps adicionadas
+- `loading.tsx`: skeleton pages (dashboard, configuracoes, frota/veiculos, frota/motoristas, viagens, recibos, manutencao, fluxo-caixa, custos, notificacoes)
+- `viagens/page.tsx`: filtros status+veículo, export CSV de custos
+- `manutencao/page.tsx`: filtros vehicle+type
+
+### Frontend - Funcionalidades completas:
+- **Dashboard**: KPIs, BarChart custos por categoria (`/costs/breakdown`), tabela performance veículos, painel OCR, contagem alertas
+- **Veículos** (`/frota/veiculos`): listar+filtrar+paginar+CRUD
+- **Motoristas** (`/frota/motoristas`): listar+buscar+paginar+CRUD
+- **Viagens** (`/viagens`): listar+filtrar+paginar+CRUD+concluir+export CSV
+- **Custos** (`/custos`): listar+filtrar (veículo/categoria/data)+paginar+criar manual+export CSV
+- **Fluxo de Caixa** (`/fluxo-caixa`): cards por categoria com % e badge alert
+- **Recibos** (`/recibos`): OCR simulate+confirm/reject+paginados
+- **Manutenção** (`/manutencao`): listar+filtrar+paginar+CRUD (gera CostEntry automaticamente)
+- **Notificações** (`/notificacoes`): listar CostAlerts + resolver + toggle resolvidos
+- **Configurações** (`/configuracoes`): form editar empresa (nome/CNPJ/telefone/margem) + listar usuários
+- **Auth**: login (`/login`), register (`/register`), refresh token via interceptor axios
+
+### Frontend - Testes (Vitest):
+- `vitest.config.ts` + `vitest.setup.ts` configurados (jsdom + @vitejs/plugin-react + @testing-library/jest-dom)
+- `lib/utils.test.ts` (23 testes): cn, formatBRL, formatPercent, formatDate, formatTime
+- `stores/authStore.test.ts` (6 testes): estado inicial, setTokens/setUser/logout, fluxo completo
+- `components/ui/badge.test.tsx` (7 testes): variantes (neutral/profit/alert/warning/info) + className merge
+- `components/ui/button.test.tsx` (13 testes): variantes, sizes, onClick, disabled, type, className merge
+- Total: **49 testes passando**
 
 ## O que PRECISA ser feito
 
-### Prioridade ALTA:
-1. **Tabela de paginação**: implementar paginação real (offset/limit/page no backend + componente no frontend). Hoje usa `limit=200`.
-2. **Testes do frontend**: criar com Vitest para componentes críticos.
-3. **Testes E2E**: considerar Playwright para fluxo completo.
-
-### Prioridade MÉDIA:
-4. **Relatórios/Export**: CSV/Excel para custos e viagens.
-5. **Notificações**: in-app notification center para CostAlerts.
-6. **Filtros avançados**: período, veículo, categoria, status em viagens e custos.
-7. **Dashboard responsivo**: KPIs e gráficos adaptados para mobile.
-
 ### Prioridade BAIXA:
-8. **Refresh token**: testar flow existente no interceptor axios.
-9. **Rate limiting**: middleware.
-10. **Logging estruturado**: structlog ou loguru.
-11. **Alembic**: manter como source of truth em prod (create_all é para dev).
+1. **Empty states com CTA**: botões "+ Cadastrar Veículo" / "+ Nova Viagem" quando tabelas estão vazias
+2. **Mobile**: menu hamburger (parcial — já existe no Topbar mas sidebar ainda hidden em mobile)
+3. **PT-BR**: revisar textos remanescentes em inglês
+4. **Rate limiting**: middleware no backend
+5. **Logging estruturado**: structlog ou loguru
+6. **Alembic**: manter como source of truth em prod (create_all é para dev)
+7. **Documentação Swagger**: examples Pydantic nos endpoints
+8. **Lint cleanup**: `npx next lint`, remover console.logs remanescentes
 
 ## Regras e restrições
 
@@ -107,6 +144,7 @@ logifinance/
 - NÃO usar `lru_cache` sem `cache_clear()` em testes
 - NÃO mudar endpoints da API existente sem versionar (v2)
 - NÃO usar `confirm()` do browser sem `window.` (pode ser shadowed)
+- NÃO hardcodar secrets em código
 
 ### Convenções:
 - Código em inglês, comentários e mensagens de erro em português
@@ -116,6 +154,7 @@ logifinance/
 - App Router (não Pages Router)
 - TanStack Query v5 para data fetching
 - Zustand em `stores/` para estado global
+- Vitest em `*.test.ts(x)` na raiz do módulo testado
 
 ## Ambiente de teste
 ```bash
@@ -125,26 +164,19 @@ cd backend && python -m pytest tests/ -v
 # Backend coverage
 cd backend && python -m pytest tests/ --cov=app --cov-report=term-missing
 
+# Frontend tests
+cd frontend && npm test
+
 # Frontend build
 cd frontend && npm run build
-
-# Frontend tests (Vitest)
-cd frontend && npx vitest run
 
 # Docker
 docker-compose up --build
 ```
-
-## Estado atual (MVP pronto)
-- **Backend**: 64 testes passando (auth, vehicles, drivers, trips, costs, maintenance, receipts, alerts, tenant isolation, pagination, filters, CSV export)
-- **Frontend**: 49 testes passando (Vitest: authStore, utils, badge, button). Build limpo, 15 páginas.
-- **Páginas**: landing, login, register, dashboard, veículos, motoristas, viagens, recibos, manutenção, fluxo-caixa, notificações, configurações
-- **Endpoints**: `/costs/export/csv`, `/trips/export/csv`, `/costs/breakdown`, `/dashboard/kpis`, `/dashboard/vehicle-performance`, `/alerts` (CRUD + resolve)
-- **Landing page**: redesign profissional com tema escuro, rota map SVG, CTA
-- **Dashboard**: KPIs, CostTrendChart, CostDonutChart, VehiclePerformanceTable, RecentTripsTable, WhatsAppOcrPanel, CostAlertCard
 
 ## Dependências críticas
 - `passlib[bcrypt]==1.7.4` + `bcrypt==4.1.3` (juntos, sempre)
 - `email-validator==2.2.0` (Pydantic EmailStr)
 - `aiosqlite` (testes SQLite in-memory)
 - `asyncpg` (PostgreSQL assíncrono prod)
+- `vitest@^2.1.x` + `@vitejs/plugin-react` + `jsdom` + `@testing-library/react` (testes frontend)
