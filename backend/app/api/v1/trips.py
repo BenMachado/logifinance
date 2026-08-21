@@ -1,7 +1,10 @@
 """Trip endpoints — CRUD + 'conclude' triggers margin check + alert generation."""
+import csv
+import io
 from datetime import date, datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import StreamingResponse
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -165,3 +168,53 @@ async def delete_trip(
         raise HTTPException(status_code=404, detail="Trip not found")
     await db.delete(trip)
     await db.commit()
+
+
+@router.get("/export/csv")
+async def export_trips_csv(
+    db: AsyncSession = Depends(db_session),
+    company_id: int = Depends(current_company_id),
+    status_filter: TripStatus | None = Query(None, alias="status"),
+    vehicle_id: int | None = None,
+    date_from: date | None = None,
+    date_to: date | None = None,
+) -> StreamingResponse:
+    """Export filtered trips as CSV download."""
+    stmt = select(Trip).where(Trip.company_id == company_id)
+    if status_filter:
+        stmt = stmt.where(Trip.status == status_filter)
+    if vehicle_id is not None:
+        stmt = stmt.where(Trip.vehicle_id == vehicle_id)
+    if date_from is not None:
+        stmt = stmt.where(Trip.scheduled_date >= date_from)
+    if date_to is not None:
+        stmt = stmt.where(Trip.scheduled_date <= date_to)
+    stmt = stmt.order_by(Trip.scheduled_date.desc())
+    result = await db.execute(stmt)
+    trips = list(result.scalars().all())
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "ID", "Origem", "Destino", "Receita Bruta (R$)", "Distância (km)",
+        "Data Agendada", "Status", "Veículo ID", "Motorista ID", "Notas",
+    ])
+    for t in trips:
+        writer.writerow([
+            t.id,
+            t.origin,
+            t.destination,
+            str(t.gross_revenue),
+            t.distance_km if t.distance_km is not None else "",
+            t.scheduled_date.isoformat(),
+            t.status.value,
+            t.vehicle_id,
+            t.driver_id if t.driver_id is not None else "",
+            t.notes or "",
+        ])
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename=viagens_{date.today().isoformat()}.csv"},
+    )
