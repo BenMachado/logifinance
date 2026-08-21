@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  html,
+  body {
+    background-color: theme("colors.background");
+    color: theme("colors.foreground");
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply text-body-md;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .card-level-1 {
+    @apply bg-white border border-outline-variant shadow-card;
+  }
+  .card-level-2 {
+    @apply bg-white border border-outline-variant shadow-card;
+  }
+  .badge-profit {
+    @apply inline-block px-2 py-1 bg-success-background text-success border border-success-border text-[10px] uppercase font-bold rounded font-display;
+  }
+  .badge-alert {
+    @apply inline-block px-2 py-1 bg-error-container text-onErrorContainer text-[10px] uppercase font-bold rounded font-display;
+  }
+  .badge-neutral {
+    @apply inline-block px-2 py-1 bg-surfaceContainer-low text-secondary text-[10px] uppercase font-bold rounded font-display;
+  }
+  .nav-item-active {
+    @apply bg-surfaceContainer text-tertiary font-semibold rounded-lg flex items-center gap-sm px-sm py-sm cursor-pointer transition-colors;
+  }
+  .nav-item {
+    @apply text-secondary hover:bg-surfaceContainer-low hover:text-tertiary rounded-lg flex items-center gap-sm px-sm py-sm cursor-pointer transition-colors;
+  }
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: "FILL" 1;
+}
+.material-symbols-outlined.text-sm {
+  font-size: 16px;
+}
+.material-symbols-outlined.text-3xl {
+  font-size: 30px;
+}
+.material-symbols-outlined.text-6xl {
+  font-size: 60px;
+}
+.material-symbols-outlined.text-\[14px\] {
+  font-size: 14px;
+}
+
+.landing-route-bg {
+  background-image:
+    radial-gradient(ellipse 70% 60% at 78% 42%, rgba(249, 115, 22, 0.22), transparent 62%),
+    radial-gradient(ellipse 50% 40% at 90% 80%, rgba(249, 115, 22, 0.08), transparent 55%);
+}

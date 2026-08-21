@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: logifinance
+      POSTGRES_PASSWORD: logifinance
+      POSTGRES_DB: logifinance
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U logifinance"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://logifinance:logifinance@postgres:5432/logifinance"
+      SECRET_KEY: "tt4mUukt3-FEE_V3qq1I2oK5KRDPCf8V-Hfr-H4fcdEuYMKD7i-ml_K3P5Jx1M7u"
+      CORS_ORIGINS: '["http://localhost:3000"]'
+      STORAGE_DIR: "/app/storage"
+    volumes:
+      - backend_storage:/app/storage
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:8000"
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+  backend_storage:
