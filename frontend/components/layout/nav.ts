@@ -22,7 +22,8 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "FINANCEIRO",
     items: [
-      { href: "/fluxo-caixa", label: "Custos", icon: "account_balance" },
+      { href: "/custos", label: "Custos", icon: "receipt_long" },
+      { href: "/fluxo-caixa", label: "Fluxo de Caixa", icon: "account_balance" },
       { href: "/recibos", label: "Recibos", icon: "document_scanner" },
       { href: "/manutencao", label: "Manutenção", icon: "build" },
     ],
@@ -43,6 +44,7 @@ export const PAGE_TITLES: Record<string, string> = {
   "/viagens": "Viagens",
   "/recibos": "Recibos",
   "/manutencao": "Manutenção",
+  "/custos": "Custos",
   "/fluxo-caixa": "Fluxo de Caixa",
   "/configuracoes": "Configurações",
   "/notificacoes": "Notificações",
