@@ -128,9 +128,20 @@ cd backend && python -m pytest tests/ --cov=app --cov-report=term-missing
 # Frontend build
 cd frontend && npm run build
 
+# Frontend tests (Vitest)
+cd frontend && npx vitest run
+
 # Docker
 docker-compose up --build
 ```
+
+## Estado atual (MVP pronto)
+- **Backend**: 64 testes passando (auth, vehicles, drivers, trips, costs, maintenance, receipts, alerts, tenant isolation, pagination, filters, CSV export)
+- **Frontend**: 49 testes passando (Vitest: authStore, utils, badge, button). Build limpo, 15 páginas.
+- **Páginas**: landing, login, register, dashboard, veículos, motoristas, viagens, recibos, manutenção, fluxo-caixa, notificações, configurações
+- **Endpoints**: `/costs/export/csv`, `/trips/export/csv`, `/costs/breakdown`, `/dashboard/kpis`, `/dashboard/vehicle-performance`, `/alerts` (CRUD + resolve)
+- **Landing page**: redesign profissional com tema escuro, rota map SVG, CTA
+- **Dashboard**: KPIs, CostTrendChart, CostDonutChart, VehiclePerformanceTable, RecentTripsTable, WhatsAppOcrPanel, CostAlertCard
 
 ## Dependências críticas
 - `passlib[bcrypt]==1.7.4` + `bcrypt==4.1.3` (juntos, sempre)
