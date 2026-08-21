@@ -41,13 +41,16 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       onClick={() => onOpenChange(false)}
     >
       <div
-        className="bg-white rounded shadow-lg w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto"
+        className={cn(
+          "bg-white rounded-2xl shadow-float w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto",
+          "animate-scale-in"
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
@@ -57,7 +60,7 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 }
 
 export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-md border-b border-outline-variant", className)} {...props} />;
+  return <div className={cn("p-lg border-b border-outline-variant", className)} {...props} />;
 }
 
 export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
@@ -65,9 +68,9 @@ export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHe
 }
 
 export function DialogContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-md", className)} {...props} />;
+  return <div className={cn("p-lg", className)} {...props} />;
 }
 
 export function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-md border-t border-outline-variant flex justify-end gap-sm", className)} {...props} />;
+  return <div className={cn("p-lg border-t border-outline-variant flex justify-end gap-sm", className)} {...props} />;
 }

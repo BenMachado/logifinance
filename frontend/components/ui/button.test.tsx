@@ -20,7 +20,7 @@ describe("Button", () => {
 
   it("applies outline variant classes", () => {
     render(<Button variant="outline">X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-surfaceContainer-lowest");
+    expect(screen.getByRole("button")).toHaveClass("bg-white");
   });
 
   it("applies ghost variant classes", () => {
@@ -40,7 +40,7 @@ describe("Button", () => {
 
   it("applies size lg classes", () => {
     render(<Button size="lg">X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("h-12");
+    expect(screen.getByRole("button")).toHaveClass("h-11");
   });
 
   it("applies size icon classes", () => {

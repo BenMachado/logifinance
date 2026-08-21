@@ -11,31 +11,31 @@ describe("Badge", () => {
   it("uses neutral variant by default", () => {
     const { container } = render(<Badge>X</Badge>);
     const span = container.querySelector("span");
-    expect(span).toHaveClass("bg-surfaceContainer-low");
+    expect(span).toHaveClass("bg-surfaceContainer");
   });
 
   it("applies profit variant classes", () => {
     const { container } = render(<Badge variant="profit">+10%</Badge>);
     const span = container.querySelector("span");
-    expect(span).toHaveClass("bg-success-background");
+    expect(span).toHaveClass("bg-status-profit");
   });
 
   it("applies alert variant classes", () => {
     const { container } = render(<Badge variant="alert">!</Badge>);
     const span = container.querySelector("span");
-    expect(span).toHaveClass("bg-error-container");
+    expect(span).toHaveClass("bg-status-alert");
   });
 
   it("applies warning variant classes", () => {
     const { container } = render(<Badge variant="warning">W</Badge>);
     const span = container.querySelector("span");
-    expect(span).toHaveClass("bg-yellow-100");
+    expect(span).toHaveClass("bg-status-warning");
   });
 
   it("applies info variant classes", () => {
     const { container } = render(<Badge variant="info">i</Badge>);
     const span = container.querySelector("span");
-    expect(span).toHaveClass("bg-blue-100");
+    expect(span).toHaveClass("bg-status-info");
   });
 
   it("accepts custom className and merges it", () => {

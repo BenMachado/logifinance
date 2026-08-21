@@ -1,13 +1,14 @@
 "use client";
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  TooltipProps,
 } from "recharts";
 import { formatBRL } from "@/lib/utils";
 import type { CostEntry } from "@/types";
@@ -72,54 +73,96 @@ export function periodTotals(items: CostEntry[]) {
   return { current, previous };
 }
 
+function CustomTooltip({ active, payload, label: lbl }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div className="rounded-xl border border-outline-variant bg-white/95 px-3 py-2.5 shadow-float backdrop-blur-sm text-[12px]">
+      <p className="mb-1.5 font-bold text-tertiary">{lbl}</p>
+      {payload.map((entry) => (
+        <div key={entry.name} className="flex items-center gap-2">
+          <span
+            className="inline-block h-2 w-2 rounded-full"
+            style={{ backgroundColor: entry.color }}
+          />
+          <span className="text-secondary">{entry.name}:</span>
+          <span className="font-semibold text-tertiary">{formatBRL(Number(entry.value))}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function CostTrendChart({ items }: { items: CostEntry[] }) {
   const data = buildCostTrend(items);
   const hasData = data.some((d) => d.atual > 0 || d.anterior > 0);
 
   return (
-    <section className="flex flex-col rounded-xl border border-outline-variant bg-white p-md shadow-card">
-      <div className="mb-md flex items-center justify-between">
+    <section className="flex flex-col rounded-2xl border border-outline-variant bg-white p-lg shadow-card">
+      <div className="mb-lg flex items-center justify-between">
         <div>
-          <h2 className="font-display text-headline-md font-bold text-tertiary">Custos ao longo do tempo</h2>
+          <h2 className="font-display text-headline-md font-bold text-tertiary">
+            Custos ao longo do tempo
+          </h2>
           <p className="text-data-mono-sm text-secondary">Últimos 14 dias vs 14 dias anteriores</p>
         </div>
         <div className="hidden items-center gap-md text-data-mono-sm text-secondary sm:flex">
           <span className="inline-flex items-center gap-xs">
-            <span className="h-2 w-4 rounded-full bg-brand" /> Atual
+            <span className="h-2.5 w-4 rounded-full bg-brand" /> Atual
           </span>
           <span className="inline-flex items-center gap-xs">
-            <span className="h-0.5 w-4 border-t border-dashed border-secondary" /> Anterior
+            <span className="h-0.5 w-4 border-t-2 border-dashed border-secondary/40" /> Anterior
           </span>
         </div>
       </div>
       <div className="h-64">
         {hasData ? (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
-              <XAxis dataKey="day" tick={{ fontSize: 11, fill: "#6B7280" }} axisLine={false} tickLine={false} />
-              <YAxis
-                tick={{ fontSize: 11, fill: "#6B7280" }}
+            <AreaChart data={data} margin={{ top: 8, right: 4, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="gradAtual" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#F97316" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#F97316" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="gradAnterior" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#94A3B8" stopOpacity={0.08} />
+                  <stop offset="95%" stopColor="#94A3B8" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
+              <XAxis
+                dataKey="day"
+                tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "var(--font-mono)" }}
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(v) => `R$ ${(Number(v) / 1000).toFixed(0)}k`}
+              />
+              <YAxis
+                tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "var(--font-mono)" }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `R$${(Number(v) / 1000).toFixed(0)}k`}
                 width={48}
               />
-              <Tooltip
-                formatter={(value) => formatBRL(Number(value))}
-                contentStyle={{ borderRadius: 12, border: "1px solid #E5E7EB", fontSize: 12 }}
-              />
-              <Line type="monotone" dataKey="atual" name="Período atual" stroke="#F97316" strokeWidth={2.5} dot={false} />
-              <Line
+              <Tooltip content={<CustomTooltip />} />
+              <Area
                 type="monotone"
                 dataKey="anterior"
                 name="Período anterior"
-                stroke="#9CA3AF"
+                stroke="#CBD5E1"
                 strokeWidth={2}
                 strokeDasharray="5 5"
                 dot={false}
+                fill="url(#gradAnterior)"
               />
-            </LineChart>
+              <Area
+                type="monotone"
+                dataKey="atual"
+                name="Período atual"
+                stroke="#F97316"
+                strokeWidth={2.5}
+                dot={false}
+                fill="url(#gradAtual)"
+              />
+            </AreaChart>
           </ResponsiveContainer>
         ) : (
           <div className="flex h-full items-center justify-center text-data-mono-sm text-secondary">

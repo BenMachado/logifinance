@@ -3,16 +3,26 @@
 import { Table, THead, TBody, TR, TH, TD } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { formatBRL, formatPercent } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { VehiclePerformanceRow as Row } from "@/types";
 
 function plateInitials(plate: string) {
   return plate.replace(/[^A-Z0-9]/gi, "").slice(0, 2).toUpperCase() || "VE";
 }
 
+const AVATAR_BY_STATUS: Record<string, string> = {
+  profit: "bg-status-profit/15 text-status-profit",
+  alert: "bg-status-alert/15 text-status-alert",
+  neutral: "bg-surfaceContainer text-secondary",
+};
+
+const MARGIN_COLOR = (pct: number) =>
+  pct >= 0.1 ? "text-status-profit font-semibold" : pct < 0 ? "text-status-alert font-semibold" : "text-secondary";
+
 export function VehiclePerformanceTable({ rows }: { rows: Row[] }) {
   if (rows.length === 0) {
     return (
-      <div className="p-md text-center text-data-mono-sm text-secondary">
+      <div className="p-lg text-center text-data-mono-sm text-secondary">
         Nenhuma rota concluída este mês. Conclua viagens para ver o desempenho.
       </div>
     );
@@ -31,11 +41,16 @@ export function VehiclePerformanceTable({ rows }: { rows: Row[] }) {
           </tr>
         </THead>
         <TBody>
-          {rows.map((r) => (
-            <TR key={r.vehicle_id}>
+          {rows.map((r, i) => (
+            <TR key={r.vehicle_id} className={cn("animate-fade-slide-up", `stagger-${Math.min(i + 1, 8)}`)}>
               <TD>
                 <div className="flex items-center gap-sm">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surfaceContainer font-display text-data-mono-sm font-bold text-tertiary">
+                  <span
+                    className={cn(
+                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-display text-data-mono-sm font-bold",
+                      AVATAR_BY_STATUS[r.status] ?? "bg-surfaceContainer text-secondary"
+                    )}
+                  >
                     {plateInitials(r.plate)}
                   </span>
                   <div>
@@ -44,10 +59,12 @@ export function VehiclePerformanceTable({ rows }: { rows: Row[] }) {
                   </div>
                 </div>
               </TD>
-              <TD className="font-body text-secondary">{r.route}</TD>
-              <TD className="text-right">{formatBRL(r.gross_revenue)}</TD>
-              <TD className="text-right">{formatBRL(r.total_cost)}</TD>
-              <TD className="text-right">{formatPercent(r.margin_pct)}</TD>
+              <TD className="font-body text-secondary max-w-[160px] truncate">{r.route}</TD>
+              <TD className="text-right font-mono text-tertiary">{formatBRL(r.gross_revenue)}</TD>
+              <TD className="text-right font-mono text-tertiary">{formatBRL(r.total_cost)}</TD>
+              <TD className={cn("text-right font-mono", MARGIN_COLOR(r.margin_pct))}>
+                {formatPercent(r.margin_pct)}
+              </TD>
               <TD className="text-center">
                 {r.status === "profit" && <Badge variant="profit">Lucrativo</Badge>}
                 {r.status === "alert" && <Badge variant="alert">Alerta</Badge>}

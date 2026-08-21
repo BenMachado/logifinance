@@ -174,27 +174,35 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <section className="overflow-hidden rounded-xl border border-outline-variant bg-white shadow-card">
-        <div className="border-b border-outline-variant px-md py-sm">
+      <section className="overflow-hidden rounded-2xl border border-outline-variant bg-white shadow-card">
+        <div className="border-b border-outline-variant px-lg py-sm">
           <h2 className="font-display text-headline-md font-bold text-tertiary">Desempenho por veículo</h2>
         </div>
         <VehiclePerformanceTable rows={performance.data?.rows ?? []} />
       </section>
 
-      <section className="rounded-xl border border-outline-variant bg-white p-md shadow-card">
+      <section className="rounded-2xl border border-outline-variant bg-white p-lg shadow-card">
         <h2 className="mb-md font-display text-headline-md font-bold text-tertiary">Upload de recibos (OCR)</h2>
         <div
           {...getRootProps()}
-          className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed p-lg text-center transition-colors ${
-            isDragActive ? "border-brand bg-brand/5" : "border-outline-variant bg-surfaceContainer-low hover:bg-surfaceContainer"
+          className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-xl text-center transition-all duration-200 ${
+            isDragActive
+              ? "border-brand bg-brand/5 scale-[1.01]"
+              : "border-outline-variant bg-surfaceContainer-low hover:bg-surfaceContainer hover:border-outline"
           } ${uploading ? "pointer-events-none opacity-50" : ""}`}
         >
           <input {...getInputProps()} />
-          <span className="material-symbols-outlined mb-sm text-3xl text-secondary">
-            {uploading ? "hourglass_top" : "cloud_upload"}
+          <span
+            className={`material-symbols-outlined mb-sm text-3xl transition-all duration-200 ${
+              isDragActive ? "text-brand animate-bounce" : uploading ? "text-secondary animate-spin" : "text-secondary"
+            }`}
+          >
+            {uploading ? "autorenew" : isDragActive ? "file_download" : "cloud_upload"}
           </span>
-          <p className="text-body-md font-medium text-foreground">
-            {isDragActive ? "Solte os arquivos aqui..." : "Arraste comprovantes (PDF, JPG, PNG) ou toque para enviar"}
+          <p className="text-body-md font-semibold text-foreground">
+            {isDragActive
+              ? "Solte os arquivos aqui..."
+              : "Arraste comprovantes (PDF, JPG, PNG) ou toque para enviar"}
           </p>
           <p className="mt-xs text-data-mono-sm text-secondary">Até 50MB · extração automática de valor e placa</p>
         </div>

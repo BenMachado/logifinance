@@ -37,9 +37,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!isAuthenticated) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-md">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="text-data-mono-sm text-secondary font-medium animate-pulse">Carregando LogiFinance...</p>
+        <div className="flex flex-col items-center gap-md animate-fade-in">
+          <div className="relative flex h-12 w-12 items-center justify-center">
+            <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-brand/20 border-t-brand" />
+            <span className="font-display text-sm font-extrabold text-brand">L</span>
+          </div>
+          <div className="flex flex-col items-center gap-xs">
+            <p className="font-display text-[15px] font-bold text-tertiary">LogiFinance</p>
+            <p className="text-data-mono-sm text-secondary animate-pulse">Carregando...</p>
+          </div>
         </div>
       </div>
     );

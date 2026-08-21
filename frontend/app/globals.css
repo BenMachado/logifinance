@@ -14,6 +14,7 @@
     color: theme("colors.foreground");
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     @apply text-body-md;
@@ -24,32 +25,88 @@
   h4 {
     font-family: var(--font-display);
   }
+  * {
+    @apply border-outline-variant;
+  }
 }
 
 @layer components {
+  /* ── Cards ── */
   .card-level-1 {
-    @apply bg-white border border-outline-variant shadow-card;
+    @apply bg-white border border-outline-variant rounded-2xl shadow-card
+           transition-all duration-200 ease-bounce-subtle;
+  }
+  .card-level-1:hover {
+    @apply shadow-hover -translate-y-0.5;
   }
   .card-level-2 {
-    @apply bg-white border border-outline-variant shadow-card;
+    @apply bg-white border border-outline-variant rounded-2xl shadow-card;
   }
+
+  /* ── Badges ── */
   .badge-profit {
-    @apply inline-block px-2 py-1 bg-success-background text-success border border-success-border text-[10px] uppercase font-bold rounded font-display;
+    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
+           bg-status-profit text-white text-[10px] uppercase font-bold tracking-wider font-display;
   }
   .badge-alert {
-    @apply inline-block px-2 py-1 bg-error-container text-onErrorContainer text-[10px] uppercase font-bold rounded font-display;
+    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
+           bg-status-alert text-white text-[10px] uppercase font-bold tracking-wider font-display;
+  }
+  .badge-warning {
+    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
+           bg-status-warning text-white text-[10px] uppercase font-bold tracking-wider font-display;
   }
   .badge-neutral {
-    @apply inline-block px-2 py-1 bg-surfaceContainer-low text-secondary text-[10px] uppercase font-bold rounded font-display;
+    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
+           bg-surfaceContainer text-secondary text-[10px] uppercase font-bold tracking-wider font-display;
   }
+
+  /* ── Nav items ── */
   .nav-item-active {
-    @apply bg-surfaceContainer text-tertiary font-semibold rounded-lg flex items-center gap-sm px-sm py-sm cursor-pointer transition-colors;
+    @apply bg-brand/10 text-brand font-semibold rounded-xl flex items-center gap-sm
+           px-3 py-2.5 cursor-pointer transition-all duration-150;
   }
   .nav-item {
-    @apply text-secondary hover:bg-surfaceContainer-low hover:text-tertiary rounded-lg flex items-center gap-sm px-sm py-sm cursor-pointer transition-colors;
+    @apply text-secondary hover:bg-surfaceContainer-low hover:text-tertiary rounded-xl
+           flex items-center gap-sm px-3 py-2.5 cursor-pointer
+           transition-all duration-150 hover:translate-x-0.5;
   }
+
+  /* ── Skeleton shimmer ── */
+  .skeleton {
+    @apply rounded-lg bg-gradient-to-r from-surfaceContainer via-surfaceContainer-high to-surfaceContainer;
+    background-size: 800px 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+
+  /* ── Stagger delays para animações de lista ── */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.10s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.20s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.30s; }
+  .stagger-7 { animation-delay: 0.35s; }
+  .stagger-8 { animation-delay: 0.40s; }
 }
 
+/* ── Recharts customizações ── */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  border-radius: 12px !important;
+  border: 1px solid #E5E7EB !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  font-size: 12px !important;
+  padding: 10px 14px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+}
+.recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-label {
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+/* ── Material Symbols ── */
 .material-symbols-outlined {
   font-family: "Material Symbols Outlined";
   font-weight: normal;
@@ -64,6 +121,7 @@
   direction: ltr;
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+  user-select: none;
 }
 .material-symbols-outlined.fill {
   font-variation-settings: "FILL" 1;
@@ -81,8 +139,18 @@
   font-size: 14px;
 }
 
+/* ── Landing page ── */
 .landing-route-bg {
   background-image:
     radial-gradient(ellipse 70% 60% at 78% 42%, rgba(249, 115, 22, 0.22), transparent 62%),
     radial-gradient(ellipse 50% 40% at 90% 80%, rgba(249, 115, 22, 0.08), transparent 55%);
+}
+
+/* ── Landing glow card hover ── */
+.landing-card-glow {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.landing-card-glow:hover {
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.25), 0 8px 32px rgba(249, 115, 22, 0.12);
+  transform: translateY(-2px);
 }

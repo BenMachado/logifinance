@@ -7,17 +7,22 @@ type ButtonVariant = "default" | "outline" | "ghost" | "destructive" | "secondar
 type ButtonSize = "default" | "sm" | "lg" | "icon";
 
 const variants: Record<ButtonVariant, string> = {
-  default: "bg-brand text-brand-foreground hover:bg-brand-muted",
-  outline: "bg-surfaceContainer-lowest text-tertiary border border-outline hover:bg-surfaceContainer-low",
-  ghost: "hover:bg-surfaceContainer-high",
-  destructive: "bg-error text-error-foreground hover:opacity-90",
-  secondary: "bg-surfaceContainer-high text-foreground hover:opacity-90",
+  default:
+    "bg-brand text-brand-foreground hover:bg-brand-dim shadow-sm hover:shadow-float-brand",
+  outline:
+    "bg-white text-tertiary border border-outline-variant hover:bg-surfaceContainer-low hover:border-outline",
+  ghost:
+    "text-secondary hover:bg-surfaceContainer-high hover:text-tertiary",
+  destructive:
+    "bg-error text-error-foreground hover:bg-error/90 shadow-sm",
+  secondary:
+    "bg-surfaceContainer-high text-foreground hover:bg-surfaceContainer-highest",
 };
 
 const sizes: Record<ButtonSize, string> = {
-  default: "h-10 px-4 py-2",
-  sm: "h-8 px-3 text-sm",
-  lg: "h-12 px-6",
+  default: "h-10 px-5 py-2 text-sm",
+  sm: "h-8 px-3 text-xs",
+  lg: "h-11 px-7 text-base",
   icon: "h-10 w-10",
 };
 
@@ -31,7 +36,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     <button
       ref={ref}
       className={cn(
-        "inline-flex items-center justify-center gap-xs rounded font-bold transition-opacity disabled:opacity-50 disabled:pointer-events-none",
+        "inline-flex items-center justify-center gap-xs rounded-xl font-semibold",
+        "transition-all duration-150 ease-bounce-subtle",
+        "active:scale-[0.97]",
+        "disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-1",
         variants[variant],
         sizes[size],
         className

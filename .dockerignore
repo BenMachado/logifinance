@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+*.pyc
+__pycache__
+.pytest_cache
+.env
+.env.local
+.env.production
+storage
+*.egg-info
+dist
+build
+.vitest

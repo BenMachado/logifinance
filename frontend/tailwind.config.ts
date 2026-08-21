@@ -46,16 +46,29 @@ const config: Config = {
         success: { DEFAULT: "#059669", background: "#ECFDF5", border: "#A7F3D0" },
         profit: "#059669",
         whatsapp: "#25D366",
+
+        // Status colors — sólidos e vibrantes
+        status: {
+          profit: "#10B981",
+          alert: "#EF4444",
+          warning: "#F59E0B",
+          info: "#3B82F6",
+          neutral: "#6B7280",
+        },
       },
       boxShadow: {
-        card: "0 1px 2px rgba(17, 24, 39, 0.04), 0 4px 12px rgba(17, 24, 39, 0.04)",
+        card: "0 1px 3px rgba(17, 24, 39, 0.06), 0 4px 16px rgba(17, 24, 39, 0.06)",
+        hover: "0 4px 24px rgba(17, 24, 39, 0.12), 0 1px 4px rgba(17, 24, 39, 0.06)",
         float: "0 18px 50px rgba(0, 0, 0, 0.35)",
+        "float-brand": "0 8px 32px rgba(249, 115, 22, 0.2)",
+        sm: "0 1px 2px rgba(17, 24, 39, 0.05)",
       },
       borderRadius: {
         DEFAULT: "0.5rem",
         lg: "0.75rem",
         xl: "1rem",
         "2xl": "1.25rem",
+        "3xl": "1.5rem",
         full: "9999px",
       },
       spacing: {
@@ -88,6 +101,43 @@ const config: Config = {
           "clamp(2.5rem, 7vw, 4.75rem)",
           { lineHeight: "1.02", letterSpacing: "-0.035em", fontWeight: "800" },
         ],
+      },
+      keyframes: {
+        "fade-slide-up": {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.94)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-400px 0" },
+          "100%": { backgroundPosition: "400px 0" },
+        },
+        "slide-in-left": {
+          "0%": { opacity: "0", transform: "translateX(-8px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        "pulse-ring": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.4" },
+        },
+      },
+      animation: {
+        "fade-slide-up": "fade-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "scale-in": "scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in": "fade-in 0.35s ease both",
+        shimmer: "shimmer 1.6s linear infinite",
+        "slide-in-left": "slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "pulse-ring": "pulse-ring 2s ease-in-out infinite",
+      },
+      transitionTimingFunction: {
+        "bounce-subtle": "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },
