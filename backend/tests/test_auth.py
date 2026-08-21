@@ -75,3 +75,62 @@ async def test_me_returns_user(client):
     r = await client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
     assert r.status_code == 200
     assert r.json()["email"] == "u2@test.com"
+
+
+@pytest.mark.asyncio
+async def test_refresh_token_returns_new_pair(client):
+    """POST /auth/refresh with a valid refresh_token returns a fresh Token pair."""
+    await client.post(
+        "/api/v1/auth/register",
+        json={
+            "company_name": "RefreshCo",
+            "full_name": "Admin",
+            "email": "rf@test.com",
+            "password": "pass12345",
+        },
+    )
+    login = await client.post(
+        "/api/v1/auth/login", json={"email": "rf@test.com", "password": "pass12345"}
+    )
+    assert login.status_code == 200
+    refresh = login.json()["refresh_token"]
+    assert refresh
+
+    r = await client.post("/api/v1/auth/refresh", json={"refresh_token": refresh})
+    assert r.status_code == 200, r.text
+    tokens = r.json()
+    assert "access_token" in tokens
+    assert "refresh_token" in tokens
+    # Both tokens must be non-empty
+    assert tokens["access_token"]
+    assert tokens["refresh_token"]
+
+
+@pytest.mark.asyncio
+async def test_refresh_token_with_invalid_token_rejected(client):
+    """POST /auth/refresh with garbage returns 401."""
+    r = await client.post(
+        "/api/v1/auth/refresh", json={"refresh_token": "not.a.real.jwt"}
+    )
+    assert r.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_refresh_token_rejects_access_token(client):
+    """An access_token used in /refresh must be rejected (wrong 'type')."""
+    await client.post(
+        "/api/v1/auth/register",
+        json={
+            "company_name": "TypeCo",
+            "full_name": "Admin",
+            "email": "ty@test.com",
+            "password": "pass12345",
+        },
+    )
+    login = await client.post(
+        "/api/v1/auth/login", json={"email": "ty@test.com", "password": "pass12345"}
+    )
+    access = login.json()["access_token"]
+
+    r = await client.post("/api/v1/auth/refresh", json={"refresh_token": access})
+    assert r.status_code == 401
