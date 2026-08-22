@@ -2,7 +2,7 @@
 import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import pool
+from sqlalchemy import event, pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
@@ -47,6 +47,14 @@ async def run_migrations_online() -> None:
         poolclass=pool.NullPool,
         connect_args={"statement_cache_size": 0},
     )
+
+    @event.listens_for(connectable.sync_engine, "connect")
+    def _disable_prepared_stmts(dbapi_conn, connection_record):
+        try:
+            dbapi_conn.statement_cache_size = 0
+        except AttributeError:
+            pass
+
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
     await connectable.dispose()

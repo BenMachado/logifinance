@@ -1,6 +1,7 @@
 """Async SQLAlchemy engine, session factory, and declarative Base."""
 from typing import AsyncGenerator
 
+from sqlalchemy import event
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -17,8 +18,6 @@ class Base(DeclarativeBase):
     pass
 
 
-# `echo=False` keeps production logs clean; flip to True for SQL debugging.
-# `statement_cache_size=0` disables prepared statement cache for Supabase Transaction Pooler (PgBouncer) compatibility.
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=False,
@@ -26,6 +25,15 @@ engine = create_async_engine(
     future=True,
     connect_args={"statement_cache_size": 0},
 )
+
+
+@event.listens_for(engine.sync_engine, "connect")
+def _disable_prepared_stmts(dbapi_conn, connection_record):
+    """Ensure prepared statements are disabled for PgBouncer compatibility."""
+    try:
+        dbapi_conn.statement_cache_size = 0
+    except AttributeError:
+        pass
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
