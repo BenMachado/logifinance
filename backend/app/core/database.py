@@ -18,11 +18,13 @@ class Base(DeclarativeBase):
 
 
 # `echo=False` keeps production logs clean; flip to True for SQL debugging.
+# `statement_cache_size=0` disables prepared statement cache for Supabase Transaction Pooler (PgBouncer) compatibility.
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=False,
     pool_pre_ping=True,
     future=True,
+    connect_args={"statement_cache_size": 0},
 )
 
 AsyncSessionLocal = async_sessionmaker(

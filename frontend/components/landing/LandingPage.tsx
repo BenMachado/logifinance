@@ -120,44 +120,22 @@ export function LandingPage() {
                   className="h-[280px] w-full object-cover md:h-[400px]"
                 />
               </div>
-              <div className="absolute -bottom-4 left-4 right-4 max-w-xs rounded-xl border border-outline-variant bg-surface-bright p-4 shadow-lg sm:left-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-fixed text-primary border border-outline">
-                    <span className="material-symbols-outlined text-[20px]">trending_up</span>
-                  </span>
-                  <div>
-                    <p className="font-display text-[20px] font-extrabold leading-none text-on-surface">+18.4%</p>
-                    <p className="mt-0.5 text-[12px] text-on-surface-variant">margem liquida media por rota</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
         <section id="sobre" className="border-b border-outline-variant bg-surface py-16 md:py-24">
           <div className="mx-auto max-w-6xl px-4 md:px-16">
-            <div className="grid gap-8 md:grid-cols-3">
-              <div className="rounded-xl border border-outline-variant bg-surface-bright p-6">
-                <p className="font-mono text-[11px] uppercase tracking-[0.05em] font-bold text-on-surface-variant">Operacao</p>
-                <p className="mt-2 font-display text-[32px] leading-[40px] font-extrabold text-on-surface">1.2k</p>
-                <p className="mt-1 text-[14px] text-on-surface-variant">viagens monitoradas com margem</p>
-              </div>
-              <div className="rounded-xl border border-outline-variant bg-surface-bright p-6">
-                <p className="font-mono text-[11px] uppercase tracking-[0.05em] font-bold text-on-surface-variant">Economia</p>
-                <p className="mt-2 font-display text-[32px] leading-[40px] font-extrabold text-on-surface">40%</p>
-                <p className="mt-1 text-[14px] text-on-surface-variant">menos custo com manutencao nao planejada</p>
-              </div>
-              <div className="rounded-xl border border-outline-variant bg-surface-bright p-6">
-                <p className="font-mono text-[11px] uppercase tracking-[0.05em] font-bold text-on-surface-variant">Tempo</p>
-                <p className="mt-2 font-display text-[32px] leading-[40px] font-extrabold text-on-surface">5min</p>
-                <p className="mt-1 text-[14px] text-on-surface-variant">para lancar um custo via WhatsApp</p>
-              </div>
+            <div className="max-w-2xl">
+              <p className="font-mono text-[11px] uppercase tracking-[0.05em] font-bold text-primary">Sobre</p>
+              <h2 className="mt-2 font-display text-[24px] leading-[32px] md:text-[32px] md:leading-[40px] font-bold text-on-surface">
+                Logistica inteligente, financas sob controle
+              </h2>
+              <p className="mt-4 text-[16px] leading-[24px] text-on-surface-variant">
+                Cada rota mostra receita, custo real e se a margem ficou abaixo do que a empresa espera.
+                Alerta na hora, nao no fechamento.
+              </p>
             </div>
-            <p className="mt-8 max-w-2xl text-[16px] leading-[24px] text-on-surface-variant">
-              Cada rota mostra receita, custo real e se a margem ficou abaixo do que a empresa espera.
-              Alerta na hora, nao no fechamento.
-            </p>
           </div>
         </section>
 
