@@ -1,10 +1,8 @@
 FROM python:3.12-slim
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-       libpq-dev gcc tesseract-ocr tesseract-ocr-por tesseract-ocr-eng \
-    && rm -rf /var/lib/apt/lists/* \
-    || (echo "WARNING: Some apt packages failed, continuing..." && true)
+    && apt-get install -y --no-install-recommends libpq-dev gcc \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
