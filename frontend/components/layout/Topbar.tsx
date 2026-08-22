@@ -33,12 +33,12 @@ export function Topbar({ periodLabel }: { periodLabel: string }) {
 
       <div className="flex items-center gap-md">
         {/* Período */}
-        <label className="hidden items-center gap-xs rounded-DEFAULT border border-outline bg-surface-container-low px-3 py-1.5 font-mono text-label-caps uppercase font-semibold text-on-surface lg:flex hover:bg-surface-container transition-colors cursor-pointer">
-          <span className="material-symbols-outlined text-sm text-on-surface-variant">calendar_month</span>
+        <label className="hidden items-center gap-2 rounded-lg border border-outline-variant bg-surface px-3 py-1.5 text-[13px] text-on-surface lg:flex hover:bg-surface-container-high transition-colors cursor-pointer">
+          <span className="material-symbols-outlined text-[16px] text-on-surface-variant/60">calendar_month</span>
           <select
-            className="bg-transparent font-mono text-label-caps uppercase font-semibold text-on-surface outline-none cursor-pointer"
+            className="bg-transparent text-[13px] font-medium text-on-surface outline-none cursor-pointer"
             defaultValue={periodLabel}
-            aria-label="Período"
+            aria-label="Periodo"
           >
             <option value={periodLabel}>{periodLabel}</option>
             <option>Últimos 14 dias</option>

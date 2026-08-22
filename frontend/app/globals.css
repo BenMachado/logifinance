@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,10 +37,10 @@
   /* ── Cards ── */
   .card-level-1 {
     @apply bg-surface-bright border border-outline-variant rounded-xl shadow-sm
-           transition-all duration-200 ease-bounce-subtle;
+           transition-all duration-200;
   }
   .card-level-1:hover {
-    @apply shadow-hover -translate-y-0.5 border-outline;
+    @apply shadow-md border-outline;
   }
   .card-level-2 {
     @apply bg-surface-bright border border-outline-variant rounded-xl shadow-sm;
@@ -63,13 +66,13 @@
 
   /* ── Nav items ── */
   .nav-item-active {
-    @apply bg-primary-container/10 text-primary font-semibold rounded-lg flex items-center gap-sm
+    @apply bg-primary-container/10 text-primary font-semibold rounded-lg flex items-center gap-2
            px-3 py-2.5 cursor-pointer transition-all duration-150;
   }
   .nav-item {
     @apply text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface rounded-lg
-           flex items-center gap-sm px-3 py-2.5 cursor-pointer
-           transition-all duration-150 hover:translate-x-0.5;
+           flex items-center gap-2 px-3 py-2.5 cursor-pointer
+           transition-all duration-150;
   }
 
   /* ── Skeleton shimmer ── */
