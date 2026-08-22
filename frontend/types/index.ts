@@ -189,3 +189,21 @@ export interface CostBreakdownItem {
   category: string;
   total: number;
 }
+
+export interface MonthlyProfitItem {
+  month: string;
+  month_label: string;
+  year: number;
+  gross_revenue: number;
+  total_cost: number;
+  net_profit: number;
+  margin_pct: number;
+}
+
+export interface MonthlyProfitResponse {
+  items: MonthlyProfitItem[];
+  current_month_profit: number;
+  previous_month_profit: number;
+  delta_percent?: number | null;
+}
+

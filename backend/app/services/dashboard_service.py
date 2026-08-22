@@ -14,6 +14,8 @@ from app.models.trip import Trip, TripStatus
 from app.models.vehicle import Vehicle, VehicleStatus
 from app.schemas.dashboard import (
     DashboardKPIs,
+    MonthlyProfitItem,
+    MonthlyProfitResponse,
     VehiclePerformanceRow,
     WhatsAppReceiptEntry,
 )
@@ -200,3 +202,81 @@ async def get_active_alerts_count(db: AsyncSession, company_id: int) -> int:
         )
     )
     return int(result.scalar() or 0)
+
+
+async def get_monthly_profit(
+    db: AsyncSession, company_id: int, today: Optional[date] = None
+) -> MonthlyProfitResponse:
+    """Compute monthly profit (revenue - costs) for the last 12 months."""
+    today = today or date.today()
+    month_names = [
+        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+    ]
+
+    items: list[MonthlyProfitItem] = []
+
+    # Generate the last 12 months in chronological order
+    for offset in range(11, -1, -1):
+        # Calculate year and month
+        y = today.year
+        m = today.month - offset
+        while m <= 0:
+            m += 12
+            y -= 1
+
+        period_start = date(y, m, 1)
+        # Next month start
+        if m == 12:
+            next_start = date(y + 1, 1, 1)
+        else:
+            next_start = date(y, m + 1, 1)
+        period_end = next_start - timedelta(days=1)
+
+        # Revenue in month
+        rev_stmt = select(func.coalesce(func.sum(Trip.gross_revenue), 0)).where(
+            Trip.company_id == company_id,
+            Trip.status == TripStatus.COMPLETED,
+            Trip.scheduled_date >= period_start,
+            Trip.scheduled_date <= period_end,
+        )
+        rev = (await db.execute(rev_stmt)).scalar() or Decimal("0")
+
+        # Cost in month
+        cost_stmt = select(func.coalesce(func.sum(CostEntry.amount), 0)).where(
+            CostEntry.company_id == company_id,
+            CostEntry.incurred_on >= period_start,
+            CostEntry.incurred_on <= period_end,
+        )
+        cost = (await db.execute(cost_stmt)).scalar() or Decimal("0")
+
+        net = rev - cost
+        margin = float(net / rev) if rev > 0 else 0.0
+
+        label_name = month_names[m - 1]
+        items.append(
+            MonthlyProfitItem(
+                month=f"{label_name}/{str(y)[2:]}",
+                month_label=label_name,
+                year=y,
+                gross_revenue=Decimal(rev),
+                total_cost=Decimal(cost),
+                net_profit=Decimal(net),
+                margin_pct=margin,
+            )
+        )
+
+    current_profit = items[-1].net_profit if items else Decimal("0")
+    prev_profit = items[-2].net_profit if len(items) >= 2 else Decimal("0")
+
+    delta_pct: Optional[float] = None
+    if prev_profit != 0:
+        delta_pct = float(((current_profit - prev_profit) / abs(prev_profit)) * 100)
+
+    return MonthlyProfitResponse(
+        items=items,
+        current_month_profit=current_profit,
+        previous_month_profit=prev_profit,
+        delta_percent=delta_pct,
+    )
+

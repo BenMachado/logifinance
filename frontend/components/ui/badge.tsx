@@ -6,11 +6,11 @@ import { cn } from "@/lib/utils";
 type Variant = "profit" | "alert" | "neutral" | "warning" | "info";
 
 const styles: Record<Variant, string> = {
-  profit: "bg-status-profit text-white",
-  alert: "bg-status-alert text-white",
-  neutral: "bg-surfaceContainer text-secondary",
-  warning: "bg-status-warning text-white",
-  info: "bg-status-info text-white",
+  profit: "bg-primary text-on-primary",
+  alert: "bg-error text-on-error",
+  warning: "bg-surface-container-high text-on-surface",
+  neutral: "bg-surface-container text-on-surface-variant",
+  info: "bg-surface-container text-secondary",
 };
 
 export function Badge({
@@ -25,8 +25,8 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full",
-        "text-[10px] uppercase font-bold tracking-wider font-display",
+        "inline-flex items-center gap-0.5 px-2.5 py-0.5 rounded-full",
+        "text-label-caps uppercase font-semibold tracking-wider font-mono",
         styles[variant],
         className
       )}

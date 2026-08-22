@@ -11,18 +11,18 @@ function plateInitials(plate: string) {
 }
 
 const AVATAR_BY_STATUS: Record<string, string> = {
-  profit: "bg-status-profit/15 text-status-profit",
-  alert: "bg-status-alert/15 text-status-alert",
-  neutral: "bg-surfaceContainer text-secondary",
+  profit: "bg-primary/15 text-primary",
+  alert: "bg-error/15 text-error",
+  neutral: "bg-surface-container text-on-surface-variant",
 };
 
 const MARGIN_COLOR = (pct: number) =>
-  pct >= 0.1 ? "text-status-profit font-semibold" : pct < 0 ? "text-status-alert font-semibold" : "text-secondary";
+  pct >= 0.1 ? "text-primary font-semibold" : pct < 0 ? "text-error font-semibold" : "text-on-surface-variant";
 
 export function VehiclePerformanceTable({ rows }: { rows: Row[] }) {
   if (rows.length === 0) {
     return (
-      <div className="p-lg text-center text-data-mono-sm text-secondary">
+      <div className="p-lg text-center font-mono text-label-caps uppercase text-on-surface-variant">
         Nenhuma rota concluída este mês. Conclua viagens para ver o desempenho.
       </div>
     );
@@ -47,21 +47,21 @@ export function VehiclePerformanceTable({ rows }: { rows: Row[] }) {
                 <div className="flex items-center gap-sm">
                   <span
                     className={cn(
-                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-display text-data-mono-sm font-bold",
-                      AVATAR_BY_STATUS[r.status] ?? "bg-surfaceContainer text-secondary"
+                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-mono text-label-caps font-bold",
+                      AVATAR_BY_STATUS[r.status] ?? "bg-surface-container text-on-surface-variant"
                     )}
                   >
                     {plateInitials(r.plate)}
                   </span>
                   <div>
-                    <p className="font-body text-sm font-semibold text-tertiary">{r.plate}</p>
-                    <p className="text-data-mono-sm text-secondary">{r.model}</p>
+                    <p className="font-body text-sm font-semibold text-on-surface">{r.plate}</p>
+                    <p className="font-mono text-[11px] text-on-surface-variant">{r.model}</p>
                   </div>
                 </div>
               </TD>
-              <TD className="font-body text-secondary max-w-[160px] truncate">{r.route}</TD>
-              <TD className="text-right font-mono text-tertiary">{formatBRL(r.gross_revenue)}</TD>
-              <TD className="text-right font-mono text-tertiary">{formatBRL(r.total_cost)}</TD>
+              <TD className="font-body text-on-surface-variant max-w-[160px] truncate">{r.route}</TD>
+              <TD className="text-right font-mono text-on-surface">{formatBRL(r.gross_revenue)}</TD>
+              <TD className="text-right font-mono text-on-surface">{formatBRL(r.total_cost)}</TD>
               <TD className={cn("text-right font-mono", MARGIN_COLOR(r.margin_pct))}>
                 {formatPercent(r.margin_pct)}
               </TD>

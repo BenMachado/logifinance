@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import { KpiCard } from "@/components/dashboard/KpiCard";
+import { MonthlyProfitCard } from "@/components/dashboard/MonthlyProfitCard";
 import { VehiclePerformanceTable } from "@/components/dashboard/VehiclePerformanceTable";
 import { WhatsAppOcrPanel } from "@/components/dashboard/WhatsAppOcrPanel";
 import { CostAlertCard } from "@/components/dashboard/CostAlertCard";
@@ -118,7 +119,11 @@ export default function DashboardPage() {
 
   return (
     <>
-      <section className="grid grid-cols-1 gap-gutter sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <MonthlyProfitCard
+          currentProfit={kpis.data?.net_profit}
+          loading={kpis.isLoading}
+        />
         <KpiCard
           title="Custo total"
           value={formatBRL(kpis.data?.total_cost ?? 0)}
@@ -130,13 +135,13 @@ export default function DashboardPage() {
           value={String(trips.data?.total ?? kpis.data?.active_trips ?? 0)}
           loading={trips.isLoading}
           badge={{
-            label: `${kpis.data?.active_trips ?? 0} em andamento`,
+            label: `${kpis.data?.active_trips ?? 0} ativas`,
             tone: "neutral",
           }}
           breakdown="total no cadastro"
         />
         <KpiCard
-          title="Ticket médio de manutenção"
+          title="Ticket médio manutenção"
           value={formatBRL(avgTicket)}
           loading={maintenance.isLoading}
           delta={ticketDelta !== undefined ? { percent: ticketDelta, invert: true } : undefined}
@@ -174,37 +179,37 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <section className="overflow-hidden rounded-2xl border border-outline-variant bg-white shadow-card">
+      <section className="overflow-hidden rounded-xl border border-outline-variant bg-surface-bright shadow-sm">
         <div className="border-b border-outline-variant px-lg py-sm">
-          <h2 className="font-display text-headline-md font-bold text-tertiary">Desempenho por veículo</h2>
+          <h2 className="font-display text-headline-md font-bold text-on-surface">Desempenho por veículo</h2>
         </div>
         <VehiclePerformanceTable rows={performance.data?.rows ?? []} />
       </section>
 
-      <section className="rounded-2xl border border-outline-variant bg-white p-lg shadow-card">
-        <h2 className="mb-md font-display text-headline-md font-bold text-tertiary">Upload de recibos (OCR)</h2>
+      <section className="rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm">
+        <h2 className="mb-md font-display text-headline-md font-bold text-on-surface">Upload de recibos (OCR)</h2>
         <div
           {...getRootProps()}
-          className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-xl text-center transition-all duration-200 ${
+          className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-xl text-center transition-all duration-200 ${
             isDragActive
-              ? "border-brand bg-brand/5 scale-[1.01]"
-              : "border-outline-variant bg-surfaceContainer-low hover:bg-surfaceContainer hover:border-outline"
+              ? "border-primary bg-primary-container/10 scale-[1.01]"
+              : "border-outline-variant bg-surface-container-low hover:bg-surface-container hover:border-outline"
           } ${uploading ? "pointer-events-none opacity-50" : ""}`}
         >
           <input {...getInputProps()} />
           <span
             className={`material-symbols-outlined mb-sm text-3xl transition-all duration-200 ${
-              isDragActive ? "text-brand animate-bounce" : uploading ? "text-secondary animate-spin" : "text-secondary"
+              isDragActive ? "text-primary animate-bounce" : uploading ? "text-on-surface-variant animate-spin" : "text-on-surface-variant"
             }`}
           >
             {uploading ? "autorenew" : isDragActive ? "file_download" : "cloud_upload"}
           </span>
-          <p className="text-body-md font-semibold text-foreground">
+          <p className="text-body-md font-semibold text-on-surface">
             {isDragActive
               ? "Solte os arquivos aqui..."
               : "Arraste comprovantes (PDF, JPG, PNG) ou toque para enviar"}
           </p>
-          <p className="mt-xs text-data-mono-sm text-secondary">Até 50MB · extração automática de valor e placa</p>
+          <p className="mt-xs font-mono text-label-caps uppercase text-on-surface-variant">Até 50MB · extração automática de valor e placa</p>
         </div>
       </section>
     </>

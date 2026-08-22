@@ -76,16 +76,16 @@ export function periodTotals(items: CostEntry[]) {
 function CustomTooltip({ active, payload, label: lbl }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div className="rounded-xl border border-outline-variant bg-white/95 px-3 py-2.5 shadow-float backdrop-blur-sm text-[12px]">
-      <p className="mb-1.5 font-bold text-tertiary">{lbl}</p>
+    <div className="rounded-DEFAULT border border-outline-variant bg-surface-bright px-3 py-2 text-xs shadow-md">
+      <p className="mb-1 font-mono font-bold text-on-surface">{lbl}</p>
       {payload.map((entry) => (
-        <div key={entry.name} className="flex items-center gap-2">
+        <div key={entry.name} className="flex items-center gap-2 font-mono text-[11px]">
           <span
             className="inline-block h-2 w-2 rounded-full"
             style={{ backgroundColor: entry.color }}
           />
-          <span className="text-secondary">{entry.name}:</span>
-          <span className="font-semibold text-tertiary">{formatBRL(Number(entry.value))}</span>
+          <span className="text-on-surface-variant">{entry.name}:</span>
+          <span className="font-semibold text-on-surface">{formatBRL(Number(entry.value))}</span>
         </div>
       ))}
     </div>
@@ -97,20 +97,20 @@ export function CostTrendChart({ items }: { items: CostEntry[] }) {
   const hasData = data.some((d) => d.atual > 0 || d.anterior > 0);
 
   return (
-    <section className="flex flex-col rounded-2xl border border-outline-variant bg-white p-lg shadow-card">
+    <section className="flex flex-col rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm">
       <div className="mb-lg flex items-center justify-between">
         <div>
-          <h2 className="font-display text-headline-md font-bold text-tertiary">
+          <h2 className="font-display text-headline-md font-bold text-on-surface">
             Custos ao longo do tempo
           </h2>
-          <p className="text-data-mono-sm text-secondary">Últimos 14 dias vs 14 dias anteriores</p>
+          <p className="font-mono text-label-caps uppercase text-on-surface-variant">Últimos 14 dias vs 14 dias anteriores</p>
         </div>
-        <div className="hidden items-center gap-md text-data-mono-sm text-secondary sm:flex">
+        <div className="hidden items-center gap-md font-mono text-label-caps uppercase text-on-surface-variant sm:flex">
           <span className="inline-flex items-center gap-xs">
-            <span className="h-2.5 w-4 rounded-full bg-brand" /> Atual
+            <span className="h-2.5 w-4 rounded-full bg-primary-container" /> Atual
           </span>
           <span className="inline-flex items-center gap-xs">
-            <span className="h-0.5 w-4 border-t-2 border-dashed border-secondary/40" /> Anterior
+            <span className="h-0.5 w-4 border-t-2 border-dashed border-outline" /> Anterior
           </span>
         </div>
       </div>
@@ -120,23 +120,23 @@ export function CostTrendChart({ items }: { items: CostEntry[] }) {
             <AreaChart data={data} margin={{ top: 8, right: 4, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="gradAtual" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#F97316" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#F97316" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#ff8c00" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#ff8c00" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="gradAnterior" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#94A3B8" stopOpacity={0.08} />
-                  <stop offset="95%" stopColor="#94A3B8" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#897362" stopOpacity={0.1} />
+                  <stop offset="95%" stopColor="#897362" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#eeeeee" vertical={false} />
               <XAxis
                 dataKey="day"
-                tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "var(--font-mono)" }}
+                tick={{ fontSize: 11, fill: "#564334", fontFamily: "var(--font-mono)" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "#9CA3AF", fontFamily: "var(--font-mono)" }}
+                tick={{ fontSize: 11, fill: "#564334", fontFamily: "var(--font-mono)" }}
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={(v) => `R$${(Number(v) / 1000).toFixed(0)}k`}
@@ -147,7 +147,7 @@ export function CostTrendChart({ items }: { items: CostEntry[] }) {
                 type="monotone"
                 dataKey="anterior"
                 name="Período anterior"
-                stroke="#CBD5E1"
+                stroke="#897362"
                 strokeWidth={2}
                 strokeDasharray="5 5"
                 dot={false}
@@ -157,7 +157,7 @@ export function CostTrendChart({ items }: { items: CostEntry[] }) {
                 type="monotone"
                 dataKey="atual"
                 name="Período atual"
-                stroke="#F97316"
+                stroke="#ff8c00"
                 strokeWidth={2.5}
                 dot={false}
                 fill="url(#gradAtual)"
@@ -165,7 +165,7 @@ export function CostTrendChart({ items }: { items: CostEntry[] }) {
             </AreaChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex h-full items-center justify-center text-data-mono-sm text-secondary">
+          <div className="flex h-full items-center justify-center font-mono text-xs text-on-surface-variant">
             Sem custos no período para montar o gráfico.
           </div>
         )}

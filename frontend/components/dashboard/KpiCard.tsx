@@ -102,22 +102,22 @@ export function KpiCard({
   return (
     <div
       className={cn(
-        "flex flex-col gap-sm rounded-2xl border border-outline-variant bg-white p-lg shadow-card",
-        "transition-all duration-200 ease-bounce-subtle hover:shadow-hover hover:-translate-y-0.5",
+        "flex flex-col justify-between gap-sm rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm",
+        "transition-all duration-200 ease-bounce-subtle hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5",
         "animate-fade-slide-up",
         borderLeftAccent
       )}
     >
       {/* Título + badge/delta */}
       <div className="flex items-start justify-between gap-sm">
-        <h3 className="text-body-sm font-semibold text-secondary">{title}</h3>
+        <h3 className="text-body-sm font-semibold text-on-surface-variant">{title}</h3>
         {delta && (
           <span
             className={cn(
-              "inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-data-mono-sm font-bold",
+              "inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 font-mono text-[11px] font-bold uppercase",
               positive
-                ? "bg-status-profit/10 text-status-profit"
-                : "bg-status-alert/10 text-status-alert"
+                ? "bg-primary/10 text-primary"
+                : "bg-error/10 text-error"
             )}
           >
             <span className="material-symbols-outlined text-[14px]">
@@ -129,10 +129,10 @@ export function KpiCard({
         {!delta && badge && (
           <span
             className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-data-mono-sm font-bold",
-              badge.tone === "profit" && "bg-status-profit/10 text-status-profit",
-              badge.tone === "alert" && "bg-status-alert/10 text-status-alert",
-              badge.tone === "neutral" && "bg-surfaceContainer text-secondary"
+              "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-mono text-label-caps uppercase font-semibold",
+              badge.tone === "profit" && "bg-primary text-on-primary",
+              badge.tone === "alert" && "bg-error text-on-error",
+              badge.tone === "neutral" && "bg-surface-container text-on-surface-variant"
             )}
           >
             {badge.icon && <span className="material-symbols-outlined text-[14px]">{badge.icon}</span>}
@@ -143,11 +143,11 @@ export function KpiCard({
 
       {/* Valor principal com count-up */}
       {loading ? (
-        <div className="my-1 h-10 w-3/4 skeleton" />
+        <div className="my-1 h-9 w-3/4 skeleton" />
       ) : (
         <div
           className={cn(
-            "font-mono text-[2rem] font-bold tracking-tight text-tertiary leading-none",
+            "font-mono text-[1.75rem] font-bold tracking-tight text-on-surface leading-none",
             valueClassName
           )}
         >
@@ -157,14 +157,14 @@ export function KpiCard({
 
       {/* Breakdown / legenda */}
       {(breakdown || delta) && (
-        <p className="text-data-mono-sm text-secondary">{breakdown || "vs período anterior"}</p>
+        <p className="font-mono text-label-caps uppercase text-on-surface-variant">{breakdown || "vs período anterior"}</p>
       )}
 
       {/* Progress bar */}
       {typeof progressBar === "number" && !loading && (
-        <div className="mt-1 h-1.5 w-full rounded-full bg-surfaceContainer overflow-hidden">
+        <div className="mt-1 h-1.5 w-full rounded-full bg-surface-container overflow-hidden">
           <div
-            className="h-1.5 rounded-full bg-brand transition-all duration-700 ease-bounce-subtle"
+            className="h-1.5 rounded-full bg-primary-container transition-all duration-700 ease-bounce-subtle"
             style={{ width: `${Math.min(100, Math.max(0, progressBar * 100))}%` }}
           />
         </div>

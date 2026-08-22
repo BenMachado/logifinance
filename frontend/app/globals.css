@@ -4,14 +4,14 @@
 
 @layer base {
   :root {
-    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-    --font-body: "Inter", system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --font-display: "Hanken Grotesk", system-ui, sans-serif;
+    --font-body: "Hanken Grotesk", system-ui, sans-serif;
+    --font-mono: "Geist", ui-monospace, monospace;
   }
   html,
   body {
     background-color: theme("colors.background");
-    color: theme("colors.foreground");
+    color: theme("colors.on-surface");
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -33,48 +33,48 @@
 @layer components {
   /* ── Cards ── */
   .card-level-1 {
-    @apply bg-white border border-outline-variant rounded-2xl shadow-card
+    @apply bg-surface-bright border border-outline-variant rounded-xl shadow-sm
            transition-all duration-200 ease-bounce-subtle;
   }
   .card-level-1:hover {
-    @apply shadow-hover -translate-y-0.5;
+    @apply shadow-hover -translate-y-0.5 border-outline;
   }
   .card-level-2 {
-    @apply bg-white border border-outline-variant rounded-2xl shadow-card;
+    @apply bg-surface-bright border border-outline-variant rounded-xl shadow-sm;
   }
 
   /* ── Badges ── */
   .badge-profit {
-    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
-           bg-status-profit text-white text-[10px] uppercase font-bold tracking-wider font-display;
+    @apply inline-flex items-center gap-0.5 px-2.5 py-0.5 rounded-full
+           bg-primary text-on-primary text-label-caps uppercase font-semibold font-mono;
   }
   .badge-alert {
-    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
-           bg-status-alert text-white text-[10px] uppercase font-bold tracking-wider font-display;
+    @apply inline-flex items-center gap-0.5 px-2.5 py-0.5 rounded-full
+           bg-error text-on-error text-label-caps uppercase font-semibold font-mono;
   }
   .badge-warning {
-    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
-           bg-status-warning text-white text-[10px] uppercase font-bold tracking-wider font-display;
+    @apply inline-flex items-center gap-0.5 px-2.5 py-0.5 rounded-full
+           bg-surface-container-high text-on-surface text-label-caps uppercase font-semibold font-mono;
   }
   .badge-neutral {
-    @apply inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full
-           bg-surfaceContainer text-secondary text-[10px] uppercase font-bold tracking-wider font-display;
+    @apply inline-flex items-center gap-0.5 px-2.5 py-0.5 rounded-full
+           bg-surface-container text-on-surface-variant text-label-caps uppercase font-semibold font-mono;
   }
 
   /* ── Nav items ── */
   .nav-item-active {
-    @apply bg-brand/10 text-brand font-semibold rounded-xl flex items-center gap-sm
+    @apply bg-primary-container/10 text-primary font-semibold rounded-lg flex items-center gap-sm
            px-3 py-2.5 cursor-pointer transition-all duration-150;
   }
   .nav-item {
-    @apply text-secondary hover:bg-surfaceContainer-low hover:text-tertiary rounded-xl
+    @apply text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface rounded-lg
            flex items-center gap-sm px-3 py-2.5 cursor-pointer
            transition-all duration-150 hover:translate-x-0.5;
   }
 
   /* ── Skeleton shimmer ── */
   .skeleton {
-    @apply rounded-lg bg-gradient-to-r from-surfaceContainer via-surfaceContainer-high to-surfaceContainer;
+    @apply rounded-lg bg-gradient-to-r from-surface-container via-surface-container-high to-surface-container;
     background-size: 800px 100%;
     animation: shimmer 1.6s linear infinite;
   }

@@ -6,6 +6,7 @@ from app.api.deps import current_company_id, db_session
 from app.schemas.alert import CostAlertRead
 from app.schemas.dashboard import (
     DashboardKPIs,
+    MonthlyProfitResponse,
     VehiclePerformance,
     VehiclePerformanceRow,
     WhatsAppReceiptEntry,
@@ -13,6 +14,7 @@ from app.schemas.dashboard import (
 from app.services.dashboard_service import (
     get_active_alerts_count,
     get_kpis,
+    get_monthly_profit,
     get_recent_whatsapp_receipts,
     get_vehicle_performance,
 )
@@ -62,3 +64,12 @@ async def dashboard_alerts_count(
     company_id: int = Depends(current_company_id),
 ) -> dict:
     return {"count": await get_active_alerts_count(db, company_id)}
+
+
+@router.get("/monthly-profit", response_model=MonthlyProfitResponse)
+async def dashboard_monthly_profit(
+    db: AsyncSession = Depends(db_session),
+    company_id: int = Depends(current_company_id),
+) -> MonthlyProfitResponse:
+    return await get_monthly_profit(db, company_id)
+

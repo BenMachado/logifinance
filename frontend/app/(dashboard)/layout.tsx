@@ -39,12 +39,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-md animate-fade-in">
           <div className="relative flex h-12 w-12 items-center justify-center">
-            <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-brand/20 border-t-brand" />
-            <span className="font-display text-sm font-extrabold text-brand">L</span>
+            <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-primary-container/20 border-t-primary-container" />
+            <span className="font-display text-base font-extrabold text-primary">L</span>
           </div>
-          <div className="flex flex-col items-center gap-xs">
-            <p className="font-display text-[15px] font-bold text-tertiary">LogiFinance</p>
-            <p className="text-data-mono-sm text-secondary animate-pulse">Carregando...</p>
+          <div className="flex flex-col items-center gap-xs font-display">
+            <p className="text-[16px] font-bold text-on-surface">LogiFinance</p>
+            <p className="font-mono text-label-caps uppercase text-on-surface-variant animate-pulse">Carregando...</p>
           </div>
         </div>
       </div>

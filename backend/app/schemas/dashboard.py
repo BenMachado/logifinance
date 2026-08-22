@@ -48,3 +48,25 @@ class WhatsAppReceiptEntry(BaseModel):
     extracted_plate: Optional[str] = None
     vehicle_id: Optional[int] = None
     status: str  # "pending" | "confirmed" | "rejected"
+
+
+class MonthlyProfitItem(BaseModel):
+    """Profit and revenue/cost aggregation for a specific month."""
+
+    month: str  # "Jan/26"
+    month_label: str  # "Jan"
+    year: int
+    gross_revenue: Decimal
+    total_cost: Decimal
+    net_profit: Decimal
+    margin_pct: float
+
+
+class MonthlyProfitResponse(BaseModel):
+    """12-month historical profit response."""
+
+    items: List[MonthlyProfitItem]
+    current_month_profit: Decimal
+    previous_month_profit: Decimal
+    delta_percent: Optional[float] = None
+

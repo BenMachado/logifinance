@@ -15,7 +15,7 @@ describe("Button", () => {
 
   it("applies default variant classes", () => {
     render(<Button>X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-brand");
+    expect(screen.getByRole("button")).toHaveClass("bg-primary-container");
   });
 
   it("applies outline variant classes", () => {
@@ -25,7 +25,7 @@ describe("Button", () => {
 
   it("applies ghost variant classes", () => {
     render(<Button variant="ghost">X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("hover:bg-surfaceContainer-high");
+    expect(screen.getByRole("button")).toHaveClass("hover:bg-surface-container-high");
   });
 
   it("applies destructive variant classes", () => {

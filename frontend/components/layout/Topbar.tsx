@@ -16,27 +16,27 @@ export function Topbar({ periodLabel }: { periodLabel: string }) {
   const avatarLetter = (user?.full_name || "U").charAt(0).toUpperCase();
 
   return (
-    <header className="relative sticky top-0 z-10 flex h-16 w-full items-center justify-between border-b border-outline-variant bg-white/90 backdrop-blur-sm px-md md:px-margin">
+    <header className="relative sticky top-0 z-10 flex h-16 w-full items-center justify-between border-b border-outline bg-surface px-md md:px-margin">
       <div className="flex items-center gap-sm">
         <button
           type="button"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-secondary hover:bg-surfaceContainer-low hover:text-tertiary transition-colors md:hidden"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors md:hidden"
           aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           onClick={() => setMenuOpen((v) => !v)}
         >
           <span className="material-symbols-outlined">{menuOpen ? "close" : "menu"}</span>
         </button>
-        <h1 className="font-display text-headline-md font-bold text-tertiary">
+        <h1 className="font-display text-headline-md font-bold text-on-surface">
           {titleFromPath(pathname)}
         </h1>
       </div>
 
       <div className="flex items-center gap-md">
         {/* Período */}
-        <label className="hidden items-center gap-xs rounded-xl border border-outline-variant bg-surfaceContainer-low px-3 py-1.5 text-data-mono-sm text-tertiary lg:flex hover:border-outline transition-colors cursor-pointer">
-          <span className="material-symbols-outlined text-sm text-secondary">calendar_month</span>
+        <label className="hidden items-center gap-xs rounded-DEFAULT border border-outline bg-surface-container-low px-3 py-1.5 font-mono text-label-caps uppercase font-semibold text-on-surface lg:flex hover:bg-surface-container transition-colors cursor-pointer">
+          <span className="material-symbols-outlined text-sm text-on-surface-variant">calendar_month</span>
           <select
-            className="bg-transparent font-medium text-tertiary outline-none cursor-pointer"
+            className="bg-transparent font-mono text-label-caps uppercase font-semibold text-on-surface outline-none cursor-pointer"
             defaultValue={periodLabel}
             aria-label="Período"
           >
@@ -49,21 +49,20 @@ export function Topbar({ periodLabel }: { periodLabel: string }) {
         {/* Notificações */}
         <Link
           href="/notificacoes"
-          className="relative flex h-9 w-9 items-center justify-center rounded-xl text-secondary hover:bg-surfaceContainer-low hover:text-tertiary transition-colors"
+          className="relative flex h-9 w-9 items-center justify-center rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
           aria-label="Notificações"
         >
-          <span className="material-symbols-outlined">notifications</span>
+          <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
           {/* Indicador pulsante */}
-          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-brand animate-pulse-ring" />
+          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-primary-container animate-pulse-ring" />
         </Link>
 
         {/* Avatar */}
         <div
           className={cn(
             "flex h-9 w-9 items-center justify-center rounded-full",
-            "bg-brand font-display text-sm font-bold text-white",
-            "ring-2 ring-white shadow-sm",
-            "transition-all duration-150 hover:ring-brand/30 cursor-default"
+            "bg-primary-container font-display text-sm font-extrabold text-on-primary-container border border-on-surface shadow-sm",
+            "transition-all duration-150 hover:shadow-md cursor-default"
           )}
           title={user?.full_name || "Perfil"}
         >
@@ -73,10 +72,10 @@ export function Topbar({ periodLabel }: { periodLabel: string }) {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="absolute left-0 right-0 top-16 z-30 border-b border-outline-variant bg-white/95 backdrop-blur-sm p-md shadow-card md:hidden">
+        <div className="absolute left-0 right-0 top-16 z-30 border-b border-outline bg-surface-bright p-md shadow-card md:hidden">
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className="mb-md">
-              <p className="mb-xs px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-secondary/70">
+              <p className="mb-xs px-3 font-mono text-label-caps uppercase font-semibold text-on-surface-variant">
                 {group.label}
               </p>
               {group.items.map((item) => {
@@ -88,18 +87,27 @@ export function Topbar({ periodLabel }: { periodLabel: string }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
-                    className={cn(active ? "nav-item-active" : "nav-item")}
+                    className={cn(
+                      "flex items-center gap-sm px-3 py-2 rounded-DEFAULT font-mono text-label-caps uppercase font-semibold",
+                      active
+                        ? "bg-primary-container/10 text-primary"
+                        : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+                    )}
                   >
-                    <span className="material-symbols-outlined text-[22px]">{item.icon}</span>
+                    <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
                     <span>{item.label}</span>
                   </Link>
                 );
               })}
             </div>
           ))}
-          <Link href="/login" className="nav-item" onClick={() => logout()}>
-            <span className="material-symbols-outlined">logout</span>
-            Sair
+          <Link
+            href="/login"
+            className="flex items-center gap-sm px-3 py-2 rounded-DEFAULT font-mono text-label-caps uppercase font-semibold text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+            onClick={() => logout()}
+          >
+            <span className="material-symbols-outlined text-[20px]">logout</span>
+            <span>Sair</span>
           </Link>
         </div>
       )}
