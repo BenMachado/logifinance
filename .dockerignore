@@ -12,3 +12,5 @@ storage
 dist
 build
 .vitest
+frontend
+.github
