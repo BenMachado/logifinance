@@ -26,8 +26,17 @@ class Settings(BaseSettings):
 
     @property
     def psycopg_url(self) -> str:
-        """Convert asyncpg URL to psycopg for PgBouncer compatibility."""
-        return self.DATABASE_URL.replace("+asyncpg", "+psycopg")
+        """Convert any PostgreSQL URL to use psycopg driver."""
+        url = self.DATABASE_URL
+        if "+asyncpg" in url:
+            url = url.replace("+asyncpg", "+psycopg")
+        elif url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+psycopg://", 1)
+        if "sslmode=" not in url and "?" not in url:
+            url += "?sslmode=require"
+        elif "sslmode=" not in url:
+            url += "&sslmode=require"
+        return url
 
     # Security
     SECRET_KEY: str = "change-me-in-production-please-32-bytes-minimum"

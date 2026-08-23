@@ -1,7 +1,6 @@
 """Async SQLAlchemy engine, session factory, and declarative Base."""
 from typing import AsyncGenerator
 
-from sqlalchemy import event
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
