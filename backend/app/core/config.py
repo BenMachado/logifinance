@@ -26,12 +26,20 @@ class Settings(BaseSettings):
 
     @property
     def psycopg_url(self) -> str:
-        """Convert any PostgreSQL URL to use psycopg driver."""
+        """Convert any PostgreSQL URL to use psycopg driver, direct connection."""
         url = self.DATABASE_URL
         if "+asyncpg" in url:
             url = url.replace("+asyncpg", "+psycopg")
         elif url.startswith("postgresql://"):
             url = url.replace("postgresql://", "postgresql+psycopg://", 1)
+        # Switch from pooler to direct connection
+        url = url.replace(":6543/", ":5432/")
+        url = url.replace(
+            "aws-0-sa-east-1.pooler.supabase.com",
+            "db.bcioubbqunrjnsnhhcmd.supabase.co",
+        )
+        # Direct connection uses plain "postgres" username
+        url = url.replace("postgres.bcioubbqunrjnsnhhcmd:", "postgres:", 1)
         if "sslmode=" not in url and "?" not in url:
             url += "?sslmode=require"
         elif "sslmode=" not in url:
