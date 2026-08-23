@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: logifinance-backend
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: '["https://YOUR_FRONTEND.onrender.com"]'
+      - key: PORT
+        value: "8000"
