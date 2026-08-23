@@ -1,6 +1,7 @@
 """Async SQLAlchemy engine, session factory, and declarative Base."""
 from typing import AsyncGenerator
 
+from sqlalchemy import event
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -22,8 +23,13 @@ engine = create_async_engine(
     echo=False,
     pool_pre_ping=True,
     future=True,
-    connect_args={"prepare_threshold": 0},
 )
+
+
+@event.listens_for(engine.sync_engine, "connect")
+def _on_connect(dbapi_conn, connection_record):
+    """Disable prepared statements on every new connection for PgBouncer compat."""
+    dbapi_conn.prepare_threshold = 0
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
