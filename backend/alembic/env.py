@@ -2,7 +2,7 @@
 import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import event, pool
+from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
@@ -14,7 +14,7 @@ from app.core.database import Base
 from app import models  # noqa: F401  — register all models
 
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL.replace("%", "%%"))
+config.set_main_option("sqlalchemy.url", settings.psycopg_url.replace("%", "%%"))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -45,16 +45,7 @@ async def run_migrations_online() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
-        connect_args={"statement_cache_size": 0},
     )
-
-    @event.listens_for(connectable.sync_engine, "connect")
-    def _disable_prepared_stmts(dbapi_conn, connection_record):
-        try:
-            dbapi_conn.statement_cache_size = 0
-        except AttributeError:
-            pass
-
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
     await connectable.dispose()

@@ -19,21 +19,11 @@ class Base(DeclarativeBase):
 
 
 engine = create_async_engine(
-    settings.DATABASE_URL,
+    settings.psycopg_url,
     echo=False,
     pool_pre_ping=True,
     future=True,
-    connect_args={"statement_cache_size": 0},
 )
-
-
-@event.listens_for(engine.sync_engine, "connect")
-def _disable_prepared_stmts(dbapi_conn, connection_record):
-    """Ensure prepared statements are disabled for PgBouncer compatibility."""
-    try:
-        dbapi_conn.statement_cache_size = 0
-    except AttributeError:
-        pass
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,

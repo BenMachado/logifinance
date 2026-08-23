@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://logifinance:logifinance@localhost:5432/logifinance"
 
+    @property
+    def psycopg_url(self) -> str:
+        """Convert asyncpg URL to psycopg for PgBouncer compatibility."""
+        return self.DATABASE_URL.replace("+asyncpg", "+psycopg")
+
     # Security
     SECRET_KEY: str = "change-me-in-production-please-32-bytes-minimum"
     ALGORITHM: str = "HS256"
