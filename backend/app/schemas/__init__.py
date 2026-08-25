@@ -24,6 +24,13 @@ from app.schemas.maintenance import (
     MaintenanceRead,
     MaintenanceUpdate,
 )
+from app.schemas.payment import (
+    CheckoutRequest,
+    CheckoutResponse,
+    PlanPricing,
+    SubscriptionRead,
+    WebhookAck,
+)
 from app.schemas.receipt import (
     ReceiptConfirm,
     ReceiptCreate,
@@ -63,4 +70,9 @@ __all__ = [
     "VehiclePerformanceRow",
     "VehiclePerformance",
     "WhatsAppReceiptEntry",
+    "CheckoutRequest",
+    "CheckoutResponse",
+    "PlanPricing",
+    "SubscriptionRead",
+    "WebhookAck",
 ]

@@ -64,6 +64,11 @@ class Settings(BaseSettings):
     # OCR
     TESSERACT_LANG: str = "por+eng"
 
+    # Stripe
+    STRIPE_SECRET_KEY: str = "sk_test_..."
+    STRIPE_PUBLISHABLE_KEY: str = "pk_test_..."
+    STRIPE_WEBHOOK_SECRET: str = "whsec_..."
+
 
 @lru_cache
 def get_settings() -> Settings:

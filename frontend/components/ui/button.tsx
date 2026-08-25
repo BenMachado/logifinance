@@ -8,15 +8,15 @@ type ButtonSize = "default" | "sm" | "lg" | "icon";
 
 const variants: Record<ButtonVariant, string> = {
   default:
-    "bg-primary-container text-on-primary-container border border-outline hover:bg-primary hover:text-on-primary",
+    "bg-[hsl(226,71%,40%)] text-white border border-[hsl(226,71%,40%)] hover:bg-[hsl(217,91%,60%)]",
   outline:
-    "bg-white text-on-surface border border-outline-variant hover:bg-surface-container-high",
+    "bg-transparent text-white border border-[#333] hover:bg-white/5",
   ghost:
-    "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface",
+    "text-[#aaa] hover:bg-white/5 hover:text-white",
   destructive:
-    "bg-error text-on-error border border-outline hover:bg-error/90",
+    "bg-[hsl(0,84%,60%)] text-white border border-[hsl(0,84%,60%)] hover:bg-[hsl(0,84%,50%)]",
   secondary:
-    "bg-surface-container-high text-on-surface hover:bg-surface-container-highest",
+    "bg-[#1a1a1a] text-white border border-[#333] hover:bg-[#222]",
 };
 
 const sizes: Record<ButtonSize, string> = {

@@ -25,6 +25,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/custos", label: "Custos", icon: "receipt_long" },
       { href: "/fluxo-caixa", label: "Fluxo de Caixa", icon: "account_balance" },
       { href: "/recibos", label: "Recibos", icon: "document_scanner" },
+      { href: "/leitura", label: "Leitura Inteligente", icon: "auto_awesome" },
       { href: "/manutencao", label: "Manutenção", icon: "build" },
     ],
   },
@@ -32,6 +33,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "SISTEMA",
     items: [
       { href: "/notificacoes", label: "Notificações", icon: "notifications" },
+      { href: "/assinatura", label: "Assinatura", icon: "payments" },
       { href: "/configuracoes", label: "Configurações", icon: "settings" },
     ],
   },
@@ -46,8 +48,10 @@ export const PAGE_TITLES: Record<string, string> = {
   "/manutencao": "Manutenção",
   "/custos": "Custos",
   "/fluxo-caixa": "Fluxo de Caixa",
+  "/leitura": "Leitura Inteligente",
   "/configuracoes": "Configurações",
   "/notificacoes": "Notificações",
+  "/assinatura": "Assinatura",
 };
 
 export function titleFromPath(pathname: string): string {

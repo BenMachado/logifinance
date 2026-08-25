@@ -3,13 +3,21 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "LogiFinance",
-  description: "Gestão financeira e operacional para transportadoras",
+  title: "LogiFinance | Gestão financeira para transportadoras",
+  description:
+    "Controle fretes, custo por quilômetro, manutenção da frota e fluxo de caixa em um só sistema. Feito para transportadoras. Comece grátis por 30 dias.",
+  openGraph: {
+    title: "LogiFinance | Gestão financeira para transportadoras",
+    description:
+      "Controle fretes, custo por quilômetro, manutenção da frota e fluxo de caixa em um só sistema.",
+    type: "website",
+    siteName: "LogiFinance",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="dark">
       <head>
         <link
           rel="stylesheet"

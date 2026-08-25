@@ -79,6 +79,13 @@ const config: Config = {
         "inverse-surface": "#2f3131",
         "inverse-primary": "#ffb77d",
 
+        // Lovable brand colors (dark landing page)
+        "brand-blue": {
+          DEFAULT: "#1e40af",
+          accent: "#3b82f6",
+        },
+        "brand-accent": "#3b82f6",
+
         // Legacy / Brand aliases
         brand: {
           DEFAULT: "#904d00",
@@ -143,6 +150,9 @@ const config: Config = {
         body: ["'Hanken Grotesk'", "var(--font-body)", "sans-serif"],
         mono: ["Geist", "var(--font-mono)", "monospace"],
         sans: ["'Hanken Grotesk'", "sans-serif"],
+        // Lovable landing page fonts
+        heading: ["'Poppins'", "'Inter'", "ui-sans-serif", "system-ui", "sans-serif"],
+        inter: ["'Inter'", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       fontSize: {
         "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],

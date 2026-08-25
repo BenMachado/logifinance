@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
 
 @tailwind base;
@@ -156,4 +157,132 @@
 .landing-card-glow:hover {
   box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.25), 0 8px 32px rgba(249, 115, 22, 0.12);
   transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LogiFinance — Lovable landing page design system
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --primary: hsl(226 71% 40%);
+  --primary-foreground: hsl(0 0% 100%);
+  --accent: hsl(217 91% 60%);
+  --accent-foreground: hsl(226 71% 15%);
+  --ring: hsl(217 91% 60%);
+  --brand-gradient: linear-gradient(135deg, hsl(226 71% 40%), hsl(217 91% 60%));
+  --shadow-brand: 0 14px 40px -12px hsl(226 71% 40% / 0.55);
+}
+
+/* ── Site shell — consistent horizontal padding ── */
+.site-shell {
+  padding-inline: 4%;
+}
+@media (max-width: 520px) {
+  .site-shell {
+    padding-inline: 8%;
+  }
+}
+
+/* ── Headline typography (hero) ── */
+.headline-top {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(40px, 7vw, 80px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: white;
+}
+
+.text-mask {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(60px, 10vw, 120px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: white;
+}
+
+/* ── Card grid text mask ── */
+.typography-card-headline {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(20px, 2.8vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: white;
+}
+
+.card-text-masked {
+  --card-mask-image: none;
+  background-image: var(--card-mask-image);
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: blur(0.5px) brightness(1.4) saturate(1.5);
+  color: transparent;
+}
+
+/* ── Card grid float layout ── */
+.card-grid-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  float: left;
+}
+
+@media (min-width: 768px) {
+  .card {
+    width: 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    width: 100%;
+  }
+}
+
+.card-content {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.card-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.card:hover .card-image,
+.card-active .card-image {
+  opacity: 1;
+}
+
+.card-text {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* ── Card aspect ratio 16:9 ── */
+.card::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-top: 56.25%;
 }

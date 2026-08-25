@@ -207,3 +207,49 @@ export interface MonthlyProfitResponse {
   delta_percent?: number | null;
 }
 
+export type SmartReadFileType = "spreadsheet" | "pdf" | "image" | "unknown";
+
+export interface SmartReadItem {
+  line: number;
+  amount: number | null;
+  incurred_on: string | null;
+  category: CostCategory;
+  description: string | null;
+  plate: string | null;
+  raw_text: string | null;
+  confidence: number;
+}
+
+export interface SmartReadSummary {
+  total_items: number;
+  items_with_amount: number;
+  items_with_date: number;
+  total_amount: number | null;
+  by_category: Record<string, number>;
+}
+
+export interface SmartReadResponse {
+  file_type: SmartReadFileType;
+  detected_format: string;
+  filename: string;
+  message_summary: string | null;
+  items: SmartReadItem[];
+  summary: SmartReadSummary;
+  raw_text_preview: string | null;
+}
+
+export interface SmartReadBatchImportItem {
+  vehicle_id: number;
+  category: CostCategory;
+  source?: "whatsapp_ocr" | "manual" | "upload" | "system";
+  amount: number;
+  description?: string | null;
+  incurred_on: string;
+}
+
+export interface SmartReadBatchImportResponse {
+  created: number;
+  failed: number;
+  errors: string[];
+}
+

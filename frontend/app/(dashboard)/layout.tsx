@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
+import { SubscriptionBanner } from "@/components/subscription/SubscriptionBanner";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
@@ -36,15 +37,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!isAuthenticated) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
+      <div className="flex h-screen w-full items-center justify-center bg-black">
         <div className="flex flex-col items-center gap-md animate-fade-in">
           <div className="relative flex h-12 w-12 items-center justify-center">
-            <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-primary-container/20 border-t-primary-container" />
-            <span className="font-display text-base font-extrabold text-primary">L</span>
+            <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-[hsl(226,71%,40%)]/20 border-t-[hsl(226,71%,40%)]" />
+            <span className="font-display text-base font-extrabold text-[hsl(217,91%,60%)]">L</span>
           </div>
           <div className="flex flex-col items-center gap-xs font-display">
-            <p className="text-[16px] font-bold text-on-surface">LogiFinance</p>
-            <p className="font-mono text-label-caps uppercase text-on-surface-variant animate-pulse">Carregando...</p>
+            <p className="text-[16px] font-bold text-white">LogiFinance</p>
+            <p className="font-mono text-label-caps uppercase text-[#aaa] animate-pulse">Carregando...</p>
           </div>
         </div>
       </div>
@@ -52,12 +53,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-black">
       <Sidebar fleetSize={kpis?.fleet_size ?? 0} />
       <div className="flex h-full w-full flex-1 flex-col overflow-hidden">
         <Topbar periodLabel={kpis?.period_label || monthLabel} />
         <main className="flex-1 overflow-y-auto p-gutter md:p-margin">
-          <div className="mx-auto flex max-w-[1440px] flex-col gap-margin">{children}</div>
+          <div className="mx-auto flex max-w-[1440px] flex-col gap-margin">
+            <SubscriptionBanner />
+            {children}
+          </div>
         </main>
       </div>
     </div>

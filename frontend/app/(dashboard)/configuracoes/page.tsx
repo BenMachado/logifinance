@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -142,7 +143,7 @@ export default function ConfiguracoesPage() {
               <Badge variant="warning" className="ml-auto">Simulado</Badge>
             </div>
             <p className="text-data-mono-sm text-secondary">
-              No MVP, o envio de recibos é simulado via tela <a href="/recibos" className="text-primary font-bold hover:underline">Recibos (OCR)</a> → botão &quot;Simular Recebimento&quot;.
+              No MVP, o envio de recibos é simulado via tela <Link href="/recibos" className="text-primary font-bold hover:underline">Recibos (OCR)</Link> → botão &quot;Simular Recebimento&quot;.
               Quando a integração real com a WhatsApp Business API for configurada, este card mostrará <strong>Conectado 🟢</strong> e o webhook substituirá a simulação automaticamente.
             </p>
             <div className="border border-outline-variant rounded p-sm bg-surfaceContainer-low text-data-mono-sm">

@@ -2,6 +2,11 @@
 
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { useAuthStore } from "@/stores/authStore";
+import type {
+  SmartReadBatchImportItem,
+  SmartReadBatchImportResponse,
+  SmartReadResponse,
+} from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
@@ -71,4 +76,40 @@ export function errorMessage(err: unknown, fallback = "Algo deu errado"): string
   }
   if (err instanceof Error) return err.message;
   return fallback;
+}
+
+/* ----------------------------------------------------------------------- */
+/*  Leitura Inteligente de Arquivos                                       */
+/* ----------------------------------------------------------------------- */
+
+/**
+ * Envia um arquivo para o endpoint /smart-read.
+ * Recebe um único item ou um link remoto via parâmetro ``url``.
+ */
+export async function smartReadFile(
+  payload: { file?: File; url?: string; onProgress?: (pct: number) => void }
+): Promise<SmartReadResponse> {
+  const form = new FormData();
+  if (payload.file) form.append("file", payload.file);
+  if (payload.url) form.append("url", payload.url);
+
+  const resp = await api.post<SmartReadResponse>("/smart-read", form, {
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: (e) => {
+      if (payload.onProgress && e.total) {
+        payload.onProgress(Math.round((e.loaded * 100) / e.total));
+      }
+    },
+  });
+  return resp.data;
+}
+
+/**
+ * Importa em lote os itens confirmados como CostEntry.
+ */
+export async function smartReadImport(
+  items: SmartReadBatchImportItem[]
+): Promise<SmartReadBatchImportResponse> {
+  const resp = await api.post<SmartReadBatchImportResponse>("/smart-read/import", { items });
+  return resp.data;
 }

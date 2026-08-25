@@ -28,3 +28,4 @@ class Company(Base):
     receipts = relationship("Receipt", back_populates="company", cascade="all, delete-orphan")
     maintenance = relationship("MaintenanceRecord", back_populates="company", cascade="all, delete-orphan")
     alerts = relationship("CostAlert", back_populates="company", cascade="all, delete-orphan")
+    subscription = relationship("Subscription", back_populates="company", uselist=False, cascade="all, delete-orphan")
