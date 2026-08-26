@@ -12,7 +12,7 @@ import { registerRequest, loginRequest } from "@/hooks/useAuth";
 import { useAuthStore } from "@/stores/authStore";
 import { errorMessage } from "@/lib/api";
 
-const SUPPORT_PHONE = "(47) 99647-2811";
+const SUPPORT_PHONE = "";
 
 // --- Máscaras ------------------------------------------------------------
 
@@ -147,8 +147,7 @@ export default function RegisterPage() {
 
         <div className="flex flex-col gap-lg max-w-[560px]">
           <div>
-            <Badge variant="profit">+1.200 transportadoras</Badge>
-            <h2 className="mt-sm font-display text-headline-lg font-bold text-white leading-tight">
+            <h2 className="font-display text-headline-lg font-bold text-white leading-tight">
               A gestão da sua frota, <span className="text-[hsl(217,91%,60%)]">simples como deve ser.</span>
             </h2>
             <p className="mt-xs text-body-md text-[#aaa]">
@@ -204,7 +203,7 @@ export default function RegisterPage() {
             Criar conta gratuita
           </h2>
           <p className="text-data-mono-sm text-[#aaa] mb-md">
-            14 dias de teste, sem cartão de crédito.
+            Preencha seus dados para começar.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-md">
@@ -267,8 +266,7 @@ export default function RegisterPage() {
                   onChange={(e) => update("phone", maskPhone(e.target.value))}
                   placeholder="(00) 00000-0000"
                   maxLength={15}
-                  disabled
-                  className="bg-[#050505] border-[#1a1a1a] text-[#888] cursor-not-allowed font-mono"
+                  className="bg-black border-[#222] text-white focus:border-[hsl(217,91%,60%)] font-mono"
                 />
                 <span className="text-data-mono-sm text-[#666]">
                   Telefone principal da sua empresa
