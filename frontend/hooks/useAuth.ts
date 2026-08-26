@@ -40,10 +40,13 @@ export async function loginRequest(email: string, password: string) {
 export async function registerRequest(payload: {
   company_name: string;
   full_name: string;
+  username?: string;
+  cpf?: string;
   email: string;
   password: string;
   cnpj?: string;
   phone?: string;
+  accept_terms?: boolean;
 }) {
   const { data } = await api.post("/auth/register", payload);
   return data as {

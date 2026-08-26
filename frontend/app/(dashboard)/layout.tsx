@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
+import { SubscriptionGate } from "@/components/layout/SubscriptionGate";
 import { SubscriptionBanner } from "@/components/subscription/SubscriptionBanner";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
@@ -54,16 +55,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen overflow-hidden bg-black">
-      <Sidebar fleetSize={kpis?.fleet_size ?? 0} />
-      <div className="flex h-full w-full flex-1 flex-col overflow-hidden">
-        <Topbar periodLabel={kpis?.period_label || monthLabel} />
-        <main className="flex-1 overflow-y-auto p-gutter md:p-margin">
-          <div className="mx-auto flex max-w-[1440px] flex-col gap-margin">
-            <SubscriptionBanner />
-            {children}
-          </div>
-        </main>
-      </div>
+      <SubscriptionGate>
+        <Sidebar fleetSize={kpis?.fleet_size ?? 0} />
+        <div className="flex h-full w-full flex-1 flex-col overflow-hidden">
+          <Topbar periodLabel={kpis?.period_label || monthLabel} />
+          <main className="flex-1 overflow-y-auto p-gutter md:p-margin">
+            <div className="mx-auto flex max-w-[1440px] flex-col gap-margin">
+              <SubscriptionBanner />
+              {children}
+            </div>
+          </main>
+        </div>
+      </SubscriptionGate>
     </div>
   );
 }

@@ -10,6 +10,7 @@ from app.core.security import (
     verify_password,
 )
 from app.models.company import Company
+from app.models.subscription import PlanType, Subscription, SubscriptionStatus
 from app.models.user import User
 from app.schemas.auth import RegisterRequest, Token
 
@@ -21,6 +22,13 @@ class AuthService:
     async def register(self, payload: RegisterRequest) -> tuple[Token, User, Company]:
         """Create a Company + first admin User atomically. Returns (token, user, company)."""
 
+        # Termos de uso são obrigatórios
+        if not payload.accept_terms:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="É necessário aceitar os termos de uso e política de privacidade.",
+            )
+
         # Email uniqueness check
         existing = await self.db.execute(select(User).where(User.email == payload.email))
         if existing.scalar_one_or_none():
@@ -28,6 +36,26 @@ class AuthService:
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Email já cadastrado",
             )
+
+        # Username uniqueness (opcional mas, se enviado, precisa ser único)
+        if payload.username:
+            existing_user = await self.db.execute(
+                select(User).where(User.username == payload.username)
+            )
+            if existing_user.scalar_one_or_none():
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Nome de usuário já cadastrado",
+                )
+
+        # CPF uniqueness (opcional mas, se enviado, precisa ser único)
+        if payload.cpf:
+            existing_cpf = await self.db.execute(select(User).where(User.cpf == payload.cpf))
+            if existing_cpf.scalar_one_or_none():
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="CPF já cadastrado",
+                )
 
         # CNPJ uniqueness (optional field, but if provided, must be unique)
         if payload.cnpj:
@@ -52,6 +80,8 @@ class AuthService:
             company_id=company.id,
             email=payload.email,
             full_name=payload.full_name,
+            username=payload.username,
+            cpf=payload.cpf,
             hashed_password=hash_password(payload.password),
             is_admin=True,
         )
@@ -59,6 +89,19 @@ class AuthService:
         await self.db.flush()
         await self.db.refresh(user)
         await self.db.refresh(company)
+
+        # Cria uma Subscription em TRIAL — o usuário pode navegar pelo
+        # dashboard, mas o gate do frontend mostra um modal quando ele
+        # tenta usar as funcionalidades de gestão (criar viagem, custo,
+        # veículo, etc.) até que ele assine um plano.
+        subscription = Subscription(
+            company_id=company.id,
+            plan=PlanType.TRIAL,
+            status=SubscriptionStatus.TRIAL,
+            fleet_size=0,
+            price_cents=0,
+        )
+        self.db.add(subscription)
 
         token = self._make_token(user.id)
         return token, user, company

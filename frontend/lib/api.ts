@@ -30,6 +30,14 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const original: any = error.config;
+
+    // 402 = assinatura necessária (gate do SubscriptionGate)
+    if (error.response?.status === 402) {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("logifinance:payment_required"));
+      }
+    }
+
     if (error.response?.status === 401 && !original?._retry) {
       const refresh = useAuthStore.getState().refreshToken;
       if (!refresh) {
