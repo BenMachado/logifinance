@@ -28,7 +28,7 @@ export default function HomePage() {
         headlineTop="O financeiro da"
         headlineMasked="sua frota"
         ctaLabel="COMECE AGORA!"
-        ctaTo="/contato"
+        ctaTo="/register"
         secondaryCtaLabel="Entrar"
         secondaryCtaTo="/login"
       />
