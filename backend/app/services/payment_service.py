@@ -22,33 +22,33 @@ stripe_lib.api_key = settings.STRIPE_SECRET_KEY
 
 PLAN_PRICING = {
     PlanType.STARTER: stripe_lib.Price(
-        id="price_starter_600",
-        unit_amount=60000,  # R$ 600.00 in cents
+        id="price_starter_579",
+        unit_amount=57900,  # R$ 579.00 in cents
         currency="brl",
         recurring={"interval": "month"},
-        product_data={"name": "LogiFinance Starter"},
+        product_data={"name": "LogiFinance Essencial"},
     ),
     PlanType.PROFESSIONAL: stripe_lib.Price(
-        id="price_professional_900",
-        unit_amount=90000,  # R$ 900.00 in cents
+        id="price_professional_799",
+        unit_amount=79900,  # R$ 799.00 in cents
         currency="brl",
         recurring={"interval": "month"},
-        product_data={"name": "LogiFinance Professional"},
+        product_data={"name": "LogiFinance Premium"},
     ),
 }
 
 PRICING_INFO = {
     PlanType.STARTER: {
-        "name": "Starter",
-        "price_brl": 600.00,
+        "name": "Essencial",
+        "price_brl": 579.00,
         "max_trucks": 15,
-        "description": "Até 15 caminhões — R$ 600/mês",
+        "description": "Até 15 caminhões — R$ 579/mês",
     },
     PlanType.PROFESSIONAL: {
-        "name": "Professional",
-        "price_brl": 900.00,
+        "name": "Premium",
+        "price_brl": 799.00,
         "max_trucks": None,
-        "description": "Mais de 15 caminhões — R$ 900/mês",
+        "description": "Mais de 15 caminhões — R$ 799/mês",
     },
 }
 
@@ -63,8 +63,8 @@ def determine_plan(fleet_size: int) -> PlanType:
 def get_price_cents(plan: PlanType) -> int:
     """Return the monthly price in cents for a given plan."""
     if plan == PlanType.PROFESSIONAL:
-        return 90000
-    return 60000
+        return 79900
+    return 57900
 
 
 # ---------------------------------------------------------------------------

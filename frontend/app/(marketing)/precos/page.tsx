@@ -2,8 +2,8 @@ import Link from "next/link";
 
 const plans = [
   {
-    name: "Starter",
-    price: "R$ 600",
+    name: "Essencial",
+    price: "R$ 579",
     period: "/mês",
     description: "Para transportadoras com até 15 caminhões",
     features: [
@@ -18,8 +18,8 @@ const plans = [
     highlighted: false,
   },
   {
-    name: "Professional",
-    price: "R$ 900",
+    name: "Premium",
+    price: "R$ 799",
     period: "/mês",
     description: "Para frotas com mais de 15 caminhões",
     features: [

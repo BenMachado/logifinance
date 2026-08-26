@@ -21,8 +21,8 @@ import { useAuthStore } from "@/stores/authStore";
 const PLANS = [
   {
     id: "starter",
-    name: "Starter",
-    price: "R$ 600",
+    name: "Essencial",
+    price: "R$ 579",
     period: "/mês",
     maxTrucks: 15,
     description: "Até 15 caminhões",
@@ -37,8 +37,8 @@ const PLANS = [
   },
   {
     id: "professional",
-    name: "Professional",
-    price: "R$ 900",
+    name: "Premium",
+    price: "R$ 799",
     period: "/mês",
     maxTrucks: null,
     description: "Mais de 15 caminhões",
@@ -112,9 +112,9 @@ export default function AssinaturaPage() {
                 <span className="text-data-mono-sm text-secondary">Plano atual</span>
                 <span className="text-body-lg font-bold text-tertiary capitalize">
                   {subscription.plan === "professional"
-                    ? "Professional"
+                    ? "Premium"
                     : subscription.plan === "starter"
-                    ? "Starter"
+                    ? "Essencial"
                     : "Trial"}
                 </span>
               </div>

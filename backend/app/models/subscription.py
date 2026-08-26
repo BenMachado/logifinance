@@ -10,8 +10,8 @@ from app.core.database import Base
 
 class PlanType(str, enum.Enum):
     TRIAL = "trial"
-    STARTER = "starter"       # up to 15 trucks — R$600/mo
-    PROFESSIONAL = "professional"  # over 15 trucks — R$900/mo
+    STARTER = "starter"       # up to 15 trucks — R$579/mo
+    PROFESSIONAL = "professional"  # over 15 trucks — R$799/mo
 
 
 class SubscriptionStatus(str, enum.Enum):
