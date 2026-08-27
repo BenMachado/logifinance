@@ -32,12 +32,9 @@ class Settings(BaseSettings):
             url = url.replace("+asyncpg", "+psycopg")
         elif url.startswith("postgresql://"):
             url = url.replace("postgresql://", "postgresql+psycopg://", 1)
-        # Disable prepared statements for Supabase pooler compatibility
-        separator = "&" if "?" in url else "?"
-        if "prepare_threshold" not in url:
-            url += f"{separator}prepare_threshold=0"
         if "sslmode=" not in url:
-            url += "&sslmode=require"
+            separator = "&" if "?" in url else "?"
+            url += f"{separator}sslmode=require"
         return url
 
     # Security

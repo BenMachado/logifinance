@@ -18,7 +18,7 @@ class Base(DeclarativeBase):
 
 
 engine = create_async_engine(
-    settings.psycopg_url,
+    settings.DATABASE_URL,
     echo=False,
     pool_pre_ping=True,
     future=True,
