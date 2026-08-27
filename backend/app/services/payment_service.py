@@ -4,6 +4,7 @@ import stripe as stripe_lib
 from datetime import datetime, timezone
 from typing import Optional
 
+from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,23 +20,6 @@ stripe_lib.api_key = settings.STRIPE_SECRET_KEY
 # ---------------------------------------------------------------------------
 # Pricing
 # ---------------------------------------------------------------------------
-
-PLAN_PRICING = {
-    PlanType.STARTER: stripe_lib.Price(
-        id="price_starter_579",
-        unit_amount=57900,  # R$ 579.00 in cents
-        currency="brl",
-        recurring={"interval": "month"},
-        product_data={"name": "LogiFinance Essencial"},
-    ),
-    PlanType.PROFESSIONAL: stripe_lib.Price(
-        id="price_professional_799",
-        unit_amount=79900,  # R$ 799.00 in cents
-        currency="brl",
-        recurring={"interval": "month"},
-        product_data={"name": "LogiFinance Premium"},
-    ),
-}
 
 PRICING_INFO = {
     PlanType.STARTER: {
@@ -82,9 +66,10 @@ async def create_checkout_session(
     from app.models.vehicle import Vehicle
 
     # Count active vehicles to determine plan
+    from app.models.vehicle import VehicleStatus
     stmt = select(Vehicle).where(
         Vehicle.company_id == company_id,
-        Vehicle.status == "active",
+        Vehicle.status == VehicleStatus.ACTIVE,
     )
     result = await db.execute(stmt)
     fleet_size = len(result.scalars().all())
@@ -157,7 +142,7 @@ async def handle_webhook(db: AsyncSession, payload: bytes, sig_header: str) -> N
         )
     except (ValueError, stripe_lib.error.SignatureVerificationError) as e:
         logger.warning(f"Webhook signature verification failed: {e}")
-        raise
+        raise HTTPException(status_code=400, detail="Invalid webhook signature")
 
     event_type = event["type"]
     data_object = event["data"]["object"]
@@ -321,7 +306,10 @@ async def _get_subscription_by_stripe_id(
 
 async def get_company_subscription(db: AsyncSession, company_id: int) -> Optional[Subscription]:
     """Get the subscription for a company, creating a trial if none exists."""
-    return await _get_or_create_subscription(db, company_id)
+    try:
+        return await _get_or_create_subscription(db, company_id)
+    except Exception:
+        return None
 
 
 async def is_subscription_active(sub: Optional[Subscription]) -> bool:

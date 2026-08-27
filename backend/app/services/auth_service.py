@@ -102,6 +102,7 @@ class AuthService:
             price_cents=0,
         )
         self.db.add(subscription)
+        await self.db.flush()
 
         token = self._make_token(user.id)
         return token, user, company
