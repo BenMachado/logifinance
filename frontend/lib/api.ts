@@ -10,9 +10,14 @@ import type {
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
+if (typeof window !== "undefined") {
+  console.log("[LogiFinance] API_BASE_URL =", API_BASE_URL);
+}
+
 export const api: AxiosInstance = axios.create({
   baseURL: `${API_BASE_URL}/api/v1`,
   headers: { "Content-Type": "application/json" },
+  timeout: 15000,
 });
 
 let isRefreshing = false;
