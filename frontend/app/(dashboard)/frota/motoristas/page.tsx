@@ -85,17 +85,17 @@ export default function MotoristasPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Motoristas</h1>
-          <p className="text-data-mono-sm text-secondary">Telefone é o que conecta o motorista ao bot do WhatsApp</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Motoristas</h1>
+          <p className="text-data-mono-sm text-[#888888]">Telefone é o que conecta o motorista ao bot do WhatsApp</p>
         </div>
         <Button onClick={openCreate}>+ Novo Motorista</Button>
       </div>
 
-      <div className="card-level-1 rounded flex flex-col overflow-hidden">
-        <div className="p-md border-b border-outline-variant">
+      <div className="card-level-1 rounded-2xl flex flex-col overflow-hidden">
+        <div className="p-md border-b border-white/10">
           <Input
             placeholder="Buscar por nome ou telefone..."
             value={search}
@@ -119,21 +119,21 @@ export default function MotoristasPage() {
             <TBody>
               {drivers.data?.items?.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="p-md text-center text-secondary font-body">Nenhum motorista cadastrado.</td>
+                  <td colSpan={5} className="p-md text-center text-[#888888] font-body">Nenhum motorista cadastrado.</td>
                 </tr>
               )}
               {drivers.data?.items?.map((d) => (
                 <TR key={d.id}>
-                  <TD className="font-bold">{d.full_name}</TD>
-                  <TD className="font-body">{d.phone}</TD>
-                  <TD className="font-body">{d.license_number || "—"}</TD>
+                  <TD className="font-bold text-white">{d.full_name}</TD>
+                  <TD className="font-body text-[#aaa]">{d.phone}</TD>
+                  <TD className="font-body text-[#aaa]">{d.license_number || "—"}</TD>
                   <TD>
                     <Badge variant={d.is_active ? "profit" : "neutral"}>
                       {d.is_active ? "Ativo" : "Inativo"}
                     </Badge>
                   </TD>
                   <TD className="text-right font-body">
-                    <button onClick={() => openEdit(d)} className="text-primary font-bold mr-md hover:underline">
+                    <button onClick={() => openEdit(d)} className="text-[hsl(217,91%,60%)] font-bold mr-md hover:underline">
                       Editar
                     </button>
                     <button

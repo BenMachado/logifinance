@@ -35,11 +35,11 @@ export default function NotificacoesPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Notificações</h1>
-          <p className="text-data-mono-sm text-secondary">Alertas de margem e custo das viagens concluídas</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Notificações</h1>
+          <p className="text-data-mono-sm text-[#888888]">Alertas de margem e custo das viagens concluídas</p>
         </div>
         <Button
           variant={showResolved ? "default" : "outline"}
@@ -60,8 +60,8 @@ export default function NotificacoesPage() {
                 <tr>
                   <TH>Severidade</TH>
                   <TH>Título</TH>
-                  <TH>Margem Real</TH>
-                  <TH>Margem Esperada</TH>
+                  <TH className="text-right">Margem Real</TH>
+                  <TH className="text-right">Margem Esperada</TH>
                   <TH>Criado em</TH>
                   <TH>Status</TH>
                   <TH className="text-right">Ações</TH>
@@ -70,8 +70,8 @@ export default function NotificacoesPage() {
               <TBody>
                 {alerts.data?.items?.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="p-md text-center text-secondary font-body">
-                      Nenhum alerta {showResolved ? "" : "pendente"}. 🎉
+                    <td colSpan={7} className="p-md text-center text-[#888888] font-body">
+                      Nenhum alerta {showResolved ? "" : "pendente"}.
                     </td>
                   </tr>
                 )}
@@ -83,16 +83,16 @@ export default function NotificacoesPage() {
                       </Badge>
                     </TD>
                     <TD className="font-body">
-                      <div className="font-bold">{a.title}</div>
-                      <div className="text-secondary text-data-mono-sm">{a.message}</div>
+                      <div className="font-bold text-white">{a.title}</div>
+                      <div className="text-[#888888] text-data-mono-sm">{a.message}</div>
                     </TD>
-                    <TD className="font-bold">
-                      <span className={a.actual_margin < a.expected_margin ? "text-error" : "text-success"}>
+                    <TD className="font-bold text-right font-mono">
+                      <span className={a.actual_margin < a.expected_margin ? "text-error" : "text-[hsl(217,91%,60%)]"}>
                         {formatPercent(a.actual_margin)}
                       </span>
                     </TD>
-                    <TD className="font-body">{formatPercent(a.expected_margin)}</TD>
-                    <TD className="font-body">{formatDate(a.created_at)}</TD>
+                    <TD className="font-body text-right font-mono text-[#aaa]">{formatPercent(a.expected_margin)}</TD>
+                    <TD className="font-body text-[#888888]">{formatDate(a.created_at)}</TD>
                     <TD>
                       <Badge variant={a.is_resolved ? "profit" : "alert"}>
                         {a.is_resolved ? "Resolvido" : "Pendente"}
@@ -102,7 +102,7 @@ export default function NotificacoesPage() {
                       {!a.is_resolved && (
                         <button
                           onClick={() => resolve.mutate(a.id)}
-                          className="text-success font-bold hover:underline"
+                          className="text-[hsl(217,91%,60%)] font-bold hover:underline"
                           disabled={resolve.isPending}
                         >
                           Marcar como resolvido

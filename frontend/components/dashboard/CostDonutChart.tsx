@@ -1,6 +1,6 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { formatBRL } from "@/lib/utils";
 import type { CostBreakdownItem } from "@/types";
 
@@ -14,24 +14,24 @@ const CATEGORY_LABELS: Record<string, string> = {
   other: "Outros",
 };
 
-// Paleta vibrante e consistente com o brand laranja
+// Paleta consistente com o tema dark
 const COLORS = [
-  "#ff8c00", // primary-container
-  "#904d00", // primary
-  "#897362", // outline
-  "#564334", // on-surface-variant
-  "#5e5e5e", // secondary
-  "#ba1a1a", // error
-  "#ffb77d", // inverse-primary
+  "hsl(217,91%,60%)", // brand-accent blue
+  "hsl(226,71%,40%)", // primary blue
+  "#ff8c00",          // orange
+  "#10b981",          // emerald
+  "#8b5cf6",          // purple
+  "#f43f5e",          // rose
+  "#64748b",          // slate
 ];
 
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ name: string; value: number }> }) {
   if (!active || !payload || !payload.length) return null;
   const { name, value } = payload[0];
   return (
-    <div className="rounded-DEFAULT border border-outline-variant bg-surface-bright px-3 py-2 shadow-md text-xs font-mono">
-      <p className="font-bold text-on-surface">{name}</p>
-      <p className="text-on-surface-variant">{formatBRL(Number(value))}</p>
+    <div className="rounded-xl border border-white/10 bg-[#0a0a0a]/90 backdrop-blur-md px-3 py-2 shadow-xl text-xs font-mono text-white">
+      <p className="font-bold text-white">{name}</p>
+      <p className="text-[#aaa]">{formatBRL(Number(value))}</p>
     </div>
   );
 }
@@ -44,11 +44,11 @@ export function CostDonutChart({ items }: { items: CostBreakdownItem[] }) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
 
   return (
-    <section className="flex h-full flex-col rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm">
-      <h2 className="font-display text-headline-md font-bold text-on-surface">Custos por categoria</h2>
-      <p className="mb-md font-mono text-label-caps uppercase text-on-surface-variant">Distribuição do período</p>
+    <section className="flex h-full flex-col rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-lg shadow-sm text-white">
+      <h2 className="font-display text-headline-md font-bold text-white">Custos por categoria</h2>
+      <p className="mb-md font-mono text-label-caps uppercase text-[#888888]">Distribuição do período</p>
       {data.length === 0 || total === 0 ? (
-        <div className="flex flex-1 items-center justify-center font-mono text-xs text-on-surface-variant">
+        <div className="flex flex-1 items-center justify-center font-mono text-xs text-[#888888]">
           Nenhum custo categorizado ainda.
         </div>
       ) : (
@@ -73,22 +73,22 @@ export function CostDonutChart({ items }: { items: CostBreakdownItem[] }) {
             </ResponsiveContainer>
             {/* Centro: total */}
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-mono text-label-caps uppercase font-bold text-on-surface-variant">Total</span>
-              <span className="font-mono text-base font-bold text-on-surface">{formatBRL(total)}</span>
+              <span className="font-mono text-label-caps uppercase font-bold text-[#888888]">Total</span>
+              <span className="font-mono text-base font-bold text-white">{formatBRL(total)}</span>
             </div>
           </div>
 
           <ul className="mt-sm flex flex-col gap-1.5">
             {data.map((d, i) => (
               <li key={d.name} className="flex items-center justify-between text-body-sm group">
-                <span className="inline-flex items-center gap-2 text-on-surface-variant group-hover:text-on-surface transition-colors font-body">
+                <span className="inline-flex items-center gap-2 text-[#aaa] group-hover:text-white transition-colors font-body">
                   <span
                     className="h-2.5 w-2.5 rounded-full shrink-0"
                     style={{ backgroundColor: COLORS[i % COLORS.length] }}
                   />
                   {d.name}
                 </span>
-                <span className="font-mono font-semibold text-on-surface">{formatBRL(d.value)}</span>
+                <span className="font-mono font-semibold text-white">{formatBRL(d.value)}</span>
               </li>
             ))}
           </ul>

@@ -65,10 +65,10 @@ export default function ConfiguracoesPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div>
-        <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Configurações</h1>
-        <p className="text-data-mono-sm text-secondary">Dados da empresa, usuários e integração WhatsApp</p>
+        <h1 className="font-display text-headline-lg font-bold text-white m-0">Configurações</h1>
+        <p className="text-data-mono-sm text-[#888888]">Dados da empresa, usuários e integração WhatsApp</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-margin">
@@ -78,7 +78,7 @@ export default function ConfiguracoesPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-md">
             <div className="flex flex-col gap-xs">
-              <Label>Nome da transportadora</Label>
+              <Label className="text-[#aaa]">Nome da transportadora</Label>
               <Input
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -86,7 +86,7 @@ export default function ConfiguracoesPage() {
               />
             </div>
             <div className="flex flex-col gap-xs">
-              <Label>CNPJ</Label>
+              <Label className="text-[#aaa]">CNPJ</Label>
               <Input
                 value={form.cnpj}
                 onChange={(e) => setForm({ ...form, cnpj: e.target.value })}
@@ -94,7 +94,7 @@ export default function ConfiguracoesPage() {
               />
             </div>
             <div className="flex flex-col gap-xs">
-              <Label>Telefone de Contato</Label>
+              <Label className="text-[#aaa]">Telefone de Contato</Label>
               <Input
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -102,7 +102,7 @@ export default function ConfiguracoesPage() {
               />
             </div>
             <div className="flex flex-col gap-xs">
-              <Label>Margem Esperada Mínima (%)</Label>
+              <Label className="text-[#aaa]">Margem Esperada Mínima (%)</Label>
               <div className="flex items-center gap-xs">
                 <Input
                   type="number"
@@ -113,9 +113,9 @@ export default function ConfiguracoesPage() {
                   onChange={(e) => setForm({ ...form, expected_margin_pct: e.target.value })}
                   placeholder="20"
                 />
-                <span className="font-bold text-secondary">%</span>
+                <span className="font-bold text-[#888888]">%</span>
               </div>
-              <p className="text-data-mono-sm text-secondary mt-1">
+              <p className="text-data-mono-sm text-[#888888] mt-1">
                 Viagens concluídas com margem abaixo deste limite geram alertas de custo automáticos.
               </p>
             </div>
@@ -137,19 +137,19 @@ export default function ConfiguracoesPage() {
             <div className="flex items-center gap-sm">
               <span className="material-symbols-outlined text-whatsapp text-3xl">smart_toy</span>
               <div>
-                <p className="font-display font-bold text-tertiary m-0">Bot LogiFinance</p>
-                <p className="text-data-mono-sm text-secondary m-0">Status atual</p>
+                <p className="font-display font-bold text-white m-0">Bot LogiFinance</p>
+                <p className="text-data-mono-sm text-[#888888] m-0">Status atual</p>
               </div>
               <Badge variant="warning" className="ml-auto">Simulado</Badge>
             </div>
-            <p className="text-data-mono-sm text-secondary">
-              No MVP, o envio de recibos é simulado via tela <Link href="/recibos" className="text-primary font-bold hover:underline">Recibos (OCR)</Link> → botão &quot;Simular Recebimento&quot;.
+            <p className="text-data-mono-sm text-[#aaa]">
+              No MVP, o envio de recibos é simulado via tela <Link href="/recibos" className="text-[hsl(217,91%,60%)] font-bold hover:underline">Recibos (OCR)</Link> → botão &quot;Simular Recebimento&quot;.
               Quando a integração real com a WhatsApp Business API for configurada, este card mostrará <strong>Conectado 🟢</strong> e o webhook substituirá a simulação automaticamente.
             </p>
-            <div className="border border-outline-variant rounded p-sm bg-surfaceContainer-low text-data-mono-sm">
-              <strong className="text-tertiary">Endpoint do webhook:</strong> <code className="font-mono">POST /api/v1/receipts/whatsapp/webhook</code>
+            <div className="border border-white/10 rounded-xl p-sm bg-white/[0.02] text-data-mono-sm text-[#aaa]">
+              <strong className="text-white">Endpoint do webhook:</strong> <code className="font-mono text-[hsl(217,91%,60%)]">POST /api/v1/receipts/whatsapp/webhook</code>
               <br />
-              <strong className="text-tertiary">Endpoint de simulação:</strong> <code className="font-mono">POST /api/v1/receipts/whatsapp/simulate</code>
+              <strong className="text-white">Endpoint de simulação:</strong> <code className="font-mono text-[hsl(217,91%,60%)]">POST /api/v1/receipts/whatsapp/simulate</code>
             </div>
           </CardContent>
         </Card>
@@ -174,8 +174,8 @@ export default function ConfiguracoesPage() {
               <TBody>
                 {usersQuery.data?.map((u) => (
                   <TR key={u.id}>
-                    <TD className="font-bold">{u.full_name}</TD>
-                    <TD className="font-body">{u.email}</TD>
+                    <TD className="font-bold text-white">{u.full_name}</TD>
+                    <TD className="font-body text-[#aaa]">{u.email}</TD>
                     <TD>
                       <Badge variant={u.is_admin ? "profit" : "info"}>
                         {u.is_admin ? "Administrador" : "Operador"}
@@ -186,7 +186,7 @@ export default function ConfiguracoesPage() {
                         {u.is_active ? "Ativo" : "Inativo"}
                       </Badge>
                     </TD>
-                    <TD className="font-body">{formatDate(u.created_at)}</TD>
+                    <TD className="font-body text-[#888888]">{formatDate(u.created_at)}</TD>
                   </TR>
                 ))}
               </TBody>

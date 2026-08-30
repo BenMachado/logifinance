@@ -179,37 +179,37 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <section className="overflow-hidden rounded-xl border border-outline-variant bg-surface-bright shadow-sm">
-        <div className="border-b border-outline-variant px-lg py-sm">
-          <h2 className="font-display text-headline-md font-bold text-on-surface">Desempenho por veículo</h2>
+      <section className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-sm text-white">
+        <div className="border-b border-white/10 px-lg py-sm">
+          <h2 className="font-display text-headline-md font-bold text-white">Desempenho por veículo</h2>
         </div>
         <VehiclePerformanceTable rows={performance.data?.rows ?? []} />
       </section>
 
-      <section className="rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm">
-        <h2 className="mb-md font-display text-headline-md font-bold text-on-surface">Upload de recibos (OCR)</h2>
+      <section className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-lg shadow-sm text-white">
+        <h2 className="mb-md font-display text-headline-md font-bold text-white">Upload de recibos (OCR)</h2>
         <div
           {...getRootProps()}
           className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-xl text-center transition-all duration-200 ${
             isDragActive
-              ? "border-primary bg-primary-container/10 scale-[1.01]"
-              : "border-outline-variant bg-surface-container-low hover:bg-surface-container hover:border-outline"
+              ? "border-[hsl(217,91%,60%)] bg-[hsl(217,91%,60%)]/10 scale-[1.01]"
+              : "border-white/15 bg-white/[0.02] hover:bg-white/5 hover:border-white/25"
           } ${uploading ? "pointer-events-none opacity-50" : ""}`}
         >
           <input {...getInputProps()} />
           <span
             className={`material-symbols-outlined mb-sm text-3xl transition-all duration-200 ${
-              isDragActive ? "text-primary animate-bounce" : uploading ? "text-on-surface-variant animate-spin" : "text-on-surface-variant"
+              isDragActive ? "text-[hsl(217,91%,60%)] animate-bounce" : uploading ? "text-[#aaa] animate-spin" : "text-[#aaa]"
             }`}
           >
             {uploading ? "autorenew" : isDragActive ? "file_download" : "cloud_upload"}
           </span>
-          <p className="text-body-md font-semibold text-on-surface">
+          <p className="text-body-md font-semibold text-white">
             {isDragActive
               ? "Solte os arquivos aqui..."
               : "Arraste comprovantes (PDF, JPG, PNG) ou toque para enviar"}
           </p>
-          <p className="mt-xs font-mono text-label-caps uppercase text-on-surface-variant">Até 50MB · extração automática de valor e placa</p>
+          <p className="mt-xs font-mono text-label-caps uppercase text-[#888888]">Até 50MB · extração automática de valor e placa</p>
         </div>
       </section>
     </>

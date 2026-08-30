@@ -16,7 +16,7 @@ class RegisterRequest(BaseModel):
     cpf: Optional[str] = Field(None, max_length=14, description="CPF no formato 000.000.000-00")
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=128)
-    accept_terms: bool = Field(False, description="Aceitou os termos de uso e política de privacidade")
+    accept_terms: bool = Field(True, description="Aceitou os termos de uso e política de privacidade")
 
 
 class LoginRequest(BaseModel):

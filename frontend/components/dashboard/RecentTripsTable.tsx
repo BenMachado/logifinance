@@ -20,19 +20,19 @@ const STATUS_TONE: Record<Trip["status"], "info" | "profit" | "neutral"> = {
 
 // Barra de status à esquerda de cada row
 const STATUS_BAR: Record<Trip["status"], string> = {
-  in_progress: "bg-primary-container",
-  completed: "bg-primary",
-  cancelled: "bg-surface-container-highest",
+  in_progress: "bg-[hsl(217,91%,60%)]",
+  completed: "bg-[hsl(226,71%,40%)]",
+  cancelled: "bg-white/20",
 };
 
 // Cor de fundo do avatar baseada no charCode da inicial
 function avatarColor(name: string): string {
   const colors = [
-    "bg-primary/15 text-primary",
-    "bg-primary-container/20 text-on-primary-container",
-    "bg-surface-container-high text-on-surface",
-    "bg-outline-variant/50 text-on-surface-variant",
-    "bg-secondary/15 text-secondary",
+    "bg-[hsl(226,71%,40%)]/20 text-[hsl(217,91%,60%)]",
+    "bg-emerald-500/20 text-emerald-400",
+    "bg-purple-500/20 text-purple-400",
+    "bg-amber-500/20 text-amber-400",
+    "bg-white/10 text-white",
   ];
   const code = (name.charCodeAt(0) || 0) % colors.length;
   return colors[code];
@@ -52,12 +52,12 @@ export function RecentTripsTable({ trips, drivers }: { trips: Trip[]; drivers: D
   const byId = new Map(drivers.map((d) => [d.id, d]));
 
   return (
-    <section className="overflow-hidden rounded-xl border border-outline-variant bg-surface-bright shadow-sm">
-      <div className="flex items-center justify-between border-b border-outline-variant px-lg py-sm">
-        <h2 className="font-display text-headline-md font-bold text-on-surface">Últimas viagens</h2>
+    <section className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-sm text-white">
+      <div className="flex items-center justify-between border-b border-white/10 px-lg py-sm">
+        <h2 className="font-display text-headline-md font-bold text-white">Últimas viagens</h2>
       </div>
       {trips.length === 0 ? (
-        <p className="p-lg text-center font-mono text-label-caps uppercase text-on-surface-variant">
+        <p className="p-lg text-center font-mono text-label-caps uppercase text-[#888888]">
           Nenhuma viagem cadastrada ainda.
         </p>
       ) : (
@@ -99,15 +99,15 @@ export function RecentTripsTable({ trips, drivers }: { trips: Trip[]; drivers: D
                           {initials(name)}
                         </span>
                         <div>
-                          <p className="font-body text-sm font-semibold text-on-surface">{name}</p>
-                          <p className="font-mono text-[11px] text-on-surface-variant">
+                          <p className="font-body text-sm font-semibold text-white">{name}</p>
+                          <p className="font-mono text-[11px] text-[#888888]">
                             {trip.origin} → {trip.destination}
                           </p>
                         </div>
                       </div>
                     </TD>
-                    <TD className="text-on-surface-variant whitespace-nowrap font-mono text-xs">{formatDate(trip.scheduled_date)}</TD>
-                    <TD className="text-right font-mono font-semibold text-on-surface">
+                    <TD className="text-[#888888] whitespace-nowrap font-mono text-xs">{formatDate(trip.scheduled_date)}</TD>
+                    <TD className="text-right font-mono font-semibold text-white">
                       {formatBRL(trip.gross_revenue)}
                     </TD>
                     <TD className="text-center">

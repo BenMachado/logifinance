@@ -131,11 +131,11 @@ export default function RecibosPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Fila de Recibos</h1>
-          <p className="text-data-mono-sm text-secondary">Recibos capturados via WhatsApp — revise e aprove para gerar o custo</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Fila de Recibos</h1>
+          <p className="text-data-mono-sm text-[#888888]">Recibos capturados via WhatsApp — revise e aprove para gerar o custo</p>
         </div>
         <Button onClick={() => setSimulateOpen(true)}>+ Simular Recebimento WhatsApp</Button>
       </div>
@@ -148,8 +148,8 @@ export default function RecibosPage() {
               setStatusFilter(s);
               setPage(1);
             }}
-            className={`px-md py-xs rounded font-bold text-data-mono-sm ${
-              statusFilter === s ? "bg-primary text-primary-foreground" : "bg-surfaceContainer-low text-secondary"
+            className={`px-md py-xs rounded-xl font-bold text-data-mono-sm transition-colors ${
+              statusFilter === s ? "bg-[hsl(226,71%,40%)] text-white" : "bg-white/5 border border-white/10 text-[#aaa] hover:text-white"
             }`}
           >
             {s === "all" ? "Todos" : STATUS_LABELS[s as Receipt["status"]]}
@@ -157,7 +157,7 @@ export default function RecibosPage() {
         ))}
       </div>
 
-      <div className="card-level-1 rounded flex flex-col overflow-hidden">
+      <div className="card-level-1 rounded-2xl flex flex-col overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
             <THead>
@@ -175,25 +175,25 @@ export default function RecibosPage() {
             <TBody>
               {receipts.data?.items?.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="p-md text-center text-secondary font-body">Nenhum recibo.</td>
+                  <td colSpan={8} className="p-md text-center text-[#888888] font-body">Nenhum recibo.</td>
                 </tr>
               )}
               {receipts.data?.items?.map((r) => (
                 <TR key={r.id}>
                   <TD className="font-body">
-                    <div className="font-bold">{r.sender_name}</div>
-                    <div className="text-data-mono-sm text-secondary">{r.sender_phone || "—"}</div>
+                    <div className="font-bold text-white">{r.sender_name}</div>
+                    <div className="text-data-mono-sm text-[#888888]">{r.sender_phone || "—"}</div>
                   </TD>
-                  <TD className="font-body">{r.original_filename}</TD>
-                  <TD className="font-body">{formatDate(r.received_at)} {formatTime(r.received_at)}</TD>
-                  <TD className="text-right">{formatBRL(r.extracted_amount ?? 0)}</TD>
-                  <TD className="font-bold">{r.extracted_plate || "—"}</TD>
-                  <TD className="font-body">{r.suggested_category}</TD>
+                  <TD className="font-body text-[#aaa]">{r.original_filename}</TD>
+                  <TD className="font-body text-[#888888]">{formatDate(r.received_at)} {formatTime(r.received_at)}</TD>
+                  <TD className="text-right font-mono text-white">{formatBRL(r.extracted_amount ?? 0)}</TD>
+                  <TD className="font-bold text-white">{r.extracted_plate || "—"}</TD>
+                  <TD className="font-body text-[#aaa]">{r.suggested_category}</TD>
                   <TD><Badge variant={STATUS_TONE[r.status]}>{STATUS_LABELS[r.status]}</Badge></TD>
                   <TD className="text-right font-body">
                     {r.status === "pending" && (
                       <>
-                        <button onClick={() => openConfirm(r)} className="text-success font-bold mr-md hover:underline">
+                        <button onClick={() => openConfirm(r)} className="text-[hsl(217,91%,60%)] font-bold mr-md hover:underline">
                           Confirmar
                         </button>
                         <button

@@ -115,17 +115,17 @@ export default function ManutencaoPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Manutenção</h1>
-          <p className="text-data-mono-sm text-secondary">Os custos de manutenção entram automaticamente no cálculo de margem</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Manutenção</h1>
+          <p className="text-data-mono-sm text-[#888888]">Os custos de manutenção entram automaticamente no cálculo de margem</p>
         </div>
         <Button onClick={openCreate}>+ Nova Manutenção</Button>
       </div>
 
-      <div className="card-level-1 rounded flex flex-col overflow-hidden">
-        <div className="p-md border-b border-outline-variant flex gap-sm flex-wrap">
+      <div className="card-level-1 rounded-2xl flex flex-col overflow-hidden">
+        <div className="p-md border-b border-white/10 flex gap-sm flex-wrap">
           <Select value={vehicleFilter} onChange={(e) => { setVehicleFilter(e.target.value); setPage(1); }}>
             <option value="all">Todos os veículos</option>
             {vehicles.data?.items?.map((v) => <option key={v.id} value={v.id}>{v.plate} — {v.model}</option>)}
@@ -153,19 +153,19 @@ export default function ManutencaoPage() {
             <TBody>
               {records.data?.items?.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="p-md text-center text-secondary font-body">Nenhuma manutenção registrada.</td>
+                  <td colSpan={7} className="p-md text-center text-[#888888] font-body">Nenhuma manutenção registrada.</td>
                 </tr>
               )}
               {records.data?.items?.map((m) => (
                 <TR key={m.id}>
-                  <TD className="font-bold">{vehicles.data?.items?.find((v) => v.id === m.vehicle_id)?.plate || "—"}</TD>
+                  <TD className="font-bold text-white">{vehicles.data?.items?.find((v) => v.id === m.vehicle_id)?.plate || "—"}</TD>
                   <TD><Badge variant={TYPE_TONE[m.type]}>{TYPE_LABELS[m.type]}</Badge></TD>
-                  <TD className="font-body">{m.description}</TD>
-                  <TD className="font-body">{formatDate(m.performed_on)}</TD>
-                  <TD className="font-body">{m.next_due ? formatDate(m.next_due) : "—"}</TD>
-                  <TD className="text-right">{formatBRL(m.cost)}</TD>
+                  <TD className="font-body text-[#aaa]">{m.description}</TD>
+                  <TD className="font-body text-[#888888]">{formatDate(m.performed_on)}</TD>
+                  <TD className="font-body text-[#888888]">{m.next_due ? formatDate(m.next_due) : "—"}</TD>
+                  <TD className="text-right font-mono text-white">{formatBRL(m.cost)}</TD>
                   <TD className="text-right font-body">
-                    <button onClick={() => openEdit(m)} className="text-primary font-bold mr-md hover:underline">Editar</button>
+                    <button onClick={() => openEdit(m)} className="text-[hsl(217,91%,60%)] font-bold mr-md hover:underline">Editar</button>
                     <button
                       onClick={() => {
                         if (window.confirm("Remover esta manutenção?")) remove.mutate(m.id);

@@ -7,12 +7,12 @@ import { formatPercent } from "@/lib/utils";
 export function CostAlertCard({ alerts }: { alerts: CostAlert[] }) {
   if (alerts.length === 0) {
     return (
-      <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm">
-        <h2 className="flex items-center gap-sm font-display text-headline-md font-bold text-on-surface">
-          <span className="material-symbols-outlined fill text-primary">check_circle</span>
+      <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-lg shadow-sm text-white">
+        <h2 className="flex items-center gap-sm font-display text-headline-md font-bold text-white">
+          <span className="material-symbols-outlined fill text-[hsl(217,91%,60%)]">check_circle</span>
           Sem alertas
         </h2>
-        <p className="font-mono text-label-caps uppercase text-on-surface-variant">
+        <p className="font-mono text-label-caps uppercase text-[#888888]">
           Nenhum alerta de margem. A operação está saudável.
         </p>
       </section>
@@ -20,8 +20,8 @@ export function CostAlertCard({ alerts }: { alerts: CostAlert[] }) {
   }
 
   return (
-    <section className="flex flex-col gap-sm rounded-xl border border-outline-variant bg-surface-bright p-lg shadow-sm">
-      <h2 className="flex items-center gap-sm font-display text-headline-md font-bold text-on-surface">
+    <section className="flex flex-col gap-sm rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-lg shadow-sm text-white">
+      <h2 className="flex items-center gap-sm font-display text-headline-md font-bold text-white">
         <span className="material-symbols-outlined fill text-error animate-pulse-ring">warning</span>
         Alertas de custo
       </h2>
@@ -29,10 +29,10 @@ export function CostAlertCard({ alerts }: { alerts: CostAlert[] }) {
         {alerts.slice(0, 3).map((a) => (
           <div
             key={a.id}
-            className="rounded-DEFAULT border border-error/30 bg-error-container/20 p-sm border-l-4 border-l-error"
+            className="rounded-xl border border-error/30 bg-error/10 p-sm border-l-4 border-l-error"
           >
-            <p className="text-body-sm font-medium text-on-surface">{a.message}</p>
-            <p className="mt-1 font-mono text-label-caps text-on-surface-variant">
+            <p className="text-body-sm font-medium text-white">{a.message}</p>
+            <p className="mt-1 font-mono text-label-caps text-[#aaa]">
               Margem atual:{" "}
               <strong className="font-mono font-bold text-error">{formatPercent(a.actual_margin)}</strong>{" "}
               (esperado {formatPercent(a.expected_margin)})
@@ -40,7 +40,7 @@ export function CostAlertCard({ alerts }: { alerts: CostAlert[] }) {
           </div>
         ))}
       </div>
-      <Link href="/recibos" className="self-start font-mono text-label-caps uppercase font-bold text-primary hover:text-primary-container transition-colors hover:underline">
+      <Link href="/notificacoes" className="self-start font-mono text-label-caps uppercase font-bold text-[hsl(217,91%,60%)] hover:underline transition-colors">
         Ver detalhes →
       </Link>
     </section>

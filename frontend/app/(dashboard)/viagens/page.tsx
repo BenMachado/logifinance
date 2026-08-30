@@ -144,28 +144,30 @@ export default function ViagensPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Viagens</h1>
-          <p className="text-data-mono-sm text-secondary">Cadastre rotas e conclua para calcular margem automaticamente</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Viagens</h1>
+          <p className="text-data-mono-sm text-[#888888]">Cadastre rotas e conclua para calcular margem automaticamente</p>
         </div>
-        <Button onClick={openCreate}>+ Nova Viagem</Button>
-        <Button
-          variant="outline"
-          onClick={() => {
-            const base = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-            const params = new URLSearchParams();
-            if (vehicleFilter !== "all") params.set("vehicle_id", vehicleFilter);
-            window.open(`${base}/api/v1/costs/export/csv?${params.toString()}`, "_blank");
-          }}
-        >
-          Exportar CSV
-        </Button>
+        <div className="flex gap-sm">
+          <Button
+            variant="outline"
+            onClick={() => {
+              const base = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+              const params = new URLSearchParams();
+              if (vehicleFilter !== "all") params.set("vehicle_id", vehicleFilter);
+              window.open(`${base}/api/v1/costs/export/csv?${params.toString()}`, "_blank");
+            }}
+          >
+            Exportar CSV
+          </Button>
+          <Button onClick={openCreate}>+ Nova Viagem</Button>
+        </div>
       </div>
 
-      <div className="card-level-1 rounded flex flex-col overflow-hidden">
-        <div className="p-md border-b border-outline-variant flex flex-col gap-sm">
+      <div className="card-level-1 rounded-2xl flex flex-col overflow-hidden">
+        <div className="p-md border-b border-white/10 flex flex-col gap-sm">
           <Input
             placeholder="Buscar por origem ou destino..."
             value={search}
@@ -202,26 +204,26 @@ export default function ViagensPage() {
             <TBody>
               {trips.data?.items?.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-md text-center text-secondary font-body">Nenhuma viagem cadastrada.</td>
+                  <td colSpan={6} className="p-md text-center text-[#888888] font-body">Nenhuma viagem cadastrada.</td>
                 </tr>
               )}
               {trips.data?.items?.map((t) => (
                 <TR key={t.id}>
-                  <TD className="font-bold">{vehicles.data?.items?.find((v) => v.id === t.vehicle_id)?.plate || "—"}</TD>
-                  <TD className="font-body">{t.origin} → {t.destination}</TD>
-                  <TD className="font-body">{formatDate(t.scheduled_date)}</TD>
-                  <TD className="text-right">{formatBRL(t.gross_revenue)}</TD>
+                  <TD className="font-bold text-white">{vehicles.data?.items?.find((v) => v.id === t.vehicle_id)?.plate || "—"}</TD>
+                  <TD className="font-body text-[#aaa]">{t.origin} → {t.destination}</TD>
+                  <TD className="font-body text-[#888888]">{formatDate(t.scheduled_date)}</TD>
+                  <TD className="text-right font-mono text-white">{formatBRL(t.gross_revenue)}</TD>
                   <TD><Badge variant={STATUS_TONE[t.status]}>{STATUS_LABELS[t.status]}</Badge></TD>
                   <TD className="text-right font-body">
                     {t.status === "in_progress" && (
                       <button
                         onClick={() => complete.mutate(t.id)}
-                        className="text-success font-bold mr-md hover:underline"
+                        className="text-[hsl(217,91%,60%)] font-bold mr-md hover:underline"
                       >
                         Concluir
                       </button>
                     )}
-                    <button onClick={() => openEdit(t)} className="text-primary font-bold mr-md hover:underline">Editar</button>
+                    <button onClick={() => openEdit(t)} className="text-[hsl(217,91%,60%)] font-bold mr-md hover:underline">Editar</button>
                     <button
                       onClick={() => {
                         if (window.confirm("Remover esta viagem?")) remove.mutate(t.id);

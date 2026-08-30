@@ -15,22 +15,22 @@ describe("Button", () => {
 
   it("applies default variant classes", () => {
     render(<Button>X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-primary-container");
+    expect(screen.getByRole("button")).toHaveClass("bg-[hsl(226,71%,40%)]");
   });
 
   it("applies outline variant classes", () => {
     render(<Button variant="outline">X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-white");
+    expect(screen.getByRole("button")).toHaveClass("bg-transparent");
   });
 
   it("applies ghost variant classes", () => {
     render(<Button variant="ghost">X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("hover:bg-surface-container-high");
+    expect(screen.getByRole("button")).toHaveClass("hover:bg-white/5");
   });
 
   it("applies destructive variant classes", () => {
     render(<Button variant="destructive">X</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-error");
+    expect(screen.getByRole("button")).toHaveClass("bg-[hsl(0,84%,60%)]");
   });
 
   it("applies size sm classes", () => {

@@ -11,18 +11,18 @@ export function Sidebar({ fleetSize = 0 }: { fleetSize?: number }) {
   const logout = useAuthStore((s) => s.logout);
 
   return (
-    <aside className="hidden h-full w-72 shrink-0 flex-col border-r border-[#222] bg-black p-md md:flex">
+    <aside className="hidden h-full w-72 shrink-0 flex-col border-r border-white/10 bg-gradient-to-b from-[#0a0a0a] to-[#050505] p-md md:flex">
       {/* Logo */}
       <div className="mb-6 flex items-center gap-3 px-1">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(226,71%,40%)] text-white font-display text-base font-extrabold">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(226,71%,40%)] text-white font-display text-base font-extrabold shadow-sm">
           L
         </div>
         <div>
           <h1 className="m-0 font-display text-[15px] font-bold leading-none text-white">
             LogiFinance
           </h1>
-          <span className="mt-0.5 block text-[12px] text-[#aaa]">
-            {fleetSize} caminhoes ativos
+          <span className="mt-0.5 block text-[12px] text-[#888]">
+            {fleetSize} caminhões ativos
           </span>
         </div>
       </div>
@@ -31,7 +31,7 @@ export function Sidebar({ fleetSize = 0 }: { fleetSize?: number }) {
       <nav className="flex flex-1 flex-col gap-lg overflow-y-auto">
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
-            <p className="mb-2 px-3 text-[11px] uppercase tracking-[0.08em] font-bold text-[#666]">
+            <p className="mb-2 px-3 text-[11px] uppercase tracking-[0.08em] font-bold text-[#888]">
               {group.label}
             </p>
             <div className="flex flex-col gap-0.5">
@@ -46,7 +46,7 @@ export function Sidebar({ fleetSize = 0 }: { fleetSize?: number }) {
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-all duration-150",
                       active
-                        ? "bg-[hsl(226,71%,40%)]/15 text-[hsl(217,91%,60%)] font-semibold"
+                        ? "bg-[hsl(226,71%,40%)]/20 text-[hsl(217,91%,60%)] font-semibold border border-[hsl(217,91%,60%)]/20"
                         : "text-[#aaa] hover:bg-white/5 hover:text-white"
                     )}
                   >
@@ -69,7 +69,7 @@ export function Sidebar({ fleetSize = 0 }: { fleetSize?: number }) {
       </nav>
 
       {/* Bottom actions */}
-      <div className="mt-auto flex flex-col gap-0.5 border-t border-[#222] pt-4">
+      <div className="mt-auto flex flex-col gap-0.5 border-t border-white/10 pt-4">
         <Link
           href="/configuracoes"
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-[14px] font-medium text-[#aaa] hover:bg-white/5 hover:text-white transition-colors"

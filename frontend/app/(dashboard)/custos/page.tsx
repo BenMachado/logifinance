@@ -108,11 +108,11 @@ export default function CustosPage() {
   }
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Custos</h1>
-          <p className="text-data-mono-sm text-secondary">Registre e acompanhe os custos da operação</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Custos</h1>
+          <p className="text-data-mono-sm text-[#888888]">Registre e acompanhe os custos da operação</p>
         </div>
         <div className="flex gap-sm">
           <Button variant="outline" onClick={exportCsv}>Exportar CSV</Button>
@@ -120,8 +120,8 @@ export default function CustosPage() {
         </div>
       </div>
 
-      <div className="card-level-1 rounded flex flex-col overflow-hidden">
-        <div className="p-md border-b border-outline-variant flex flex-col gap-sm">
+      <div className="card-level-1 rounded-2xl flex flex-col overflow-hidden">
+        <div className="p-md border-b border-white/10 flex flex-col gap-sm">
           <div className="flex gap-sm flex-wrap">
             <Select value={vehicleFilter} onChange={(e) => { setVehicleFilter(e.target.value); setPage(1); }}>
               <option value="all">Todos os veículos</option>
@@ -156,17 +156,17 @@ export default function CustosPage() {
             <TBody>
               {costs.data?.items?.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-md text-center text-secondary font-body">Nenhum custo registrado.</td>
+                  <td colSpan={6} className="p-md text-center text-[#888888] font-body">Nenhum custo registrado.</td>
                 </tr>
               )}
               {costs.data?.items?.map((c) => (
                 <TR key={c.id}>
-                  <TD className="font-body">{formatDate(c.incurred_on)}</TD>
-                  <TD className="font-bold">{vehicles.data?.items?.find((v) => v.id === c.vehicle_id)?.plate || "—"}</TD>
+                  <TD className="font-body text-[#888888]">{formatDate(c.incurred_on)}</TD>
+                  <TD className="font-bold text-white">{vehicles.data?.items?.find((v) => v.id === c.vehicle_id)?.plate || "—"}</TD>
                   <TD><Badge variant="info">{CATEGORY_LABELS[c.category] || c.category}</Badge></TD>
-                  <TD className="font-body">{c.description || "—"}</TD>
-                  <TD className="text-right font-bold">{formatBRL(c.amount)}</TD>
-                  <TD className="font-body text-secondary">{c.source}</TD>
+                  <TD className="font-body text-[#aaa]">{c.description || "—"}</TD>
+                  <TD className="text-right font-bold text-white">{formatBRL(c.amount)}</TD>
+                  <TD className="font-body text-[#888888]">{c.source}</TD>
                 </TR>
               ))}
             </TBody>

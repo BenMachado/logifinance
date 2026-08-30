@@ -38,7 +38,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!isAuthenticated) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-black">
+      <div className="flex h-screen w-full items-center justify-center bg-gradient-to-br from-[#0a0a0a] via-[#050505] to-black dashboard-bg text-white">
         <div className="flex flex-col items-center gap-md animate-fade-in">
           <div className="relative flex h-12 w-12 items-center justify-center">
             <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-[hsl(226,71%,40%)]/20 border-t-[hsl(226,71%,40%)]" />
@@ -54,7 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-black">
+    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-[#0a0a0a] via-[#050505] to-black dashboard-bg text-white">
       <SubscriptionGate>
         <Sidebar fleetSize={kpis?.fleet_size ?? 0} />
         <div className="flex h-full w-full flex-1 flex-col overflow-hidden">

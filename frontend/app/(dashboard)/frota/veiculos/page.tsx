@@ -103,17 +103,17 @@ export default function VeiculosPage() {
   });
 
   return (
-    <section className="flex flex-col gap-margin">
+    <section className="flex flex-col gap-margin text-white">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg font-bold text-tertiary m-0">Veículos</h1>
-          <p className="text-data-mono-sm text-secondary">Gerencie a frota da sua transportadora</p>
+          <h1 className="font-display text-headline-lg font-bold text-white m-0">Veículos</h1>
+          <p className="text-data-mono-sm text-[#888888]">Gerencie a frota da sua transportadora</p>
         </div>
         <Button onClick={openCreate}>+ Novo Veículo</Button>
       </div>
 
-      <div className="card-level-1 rounded flex flex-col overflow-hidden">
-        <div className="p-md border-b border-outline-variant">
+      <div className="card-level-1 rounded-2xl flex flex-col overflow-hidden">
+        <div className="p-md border-b border-white/10">
           <Input
             placeholder="Buscar por placa ou modelo..."
             value={search}
@@ -138,24 +138,24 @@ export default function VeiculosPage() {
             <TBody>
               {vehicles.data?.items?.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-md text-center text-secondary font-body">
+                  <td colSpan={6} className="p-md text-center text-[#888888] font-body">
                     Nenhum veículo cadastrado.
                   </td>
                 </tr>
               )}
               {vehicles.data?.items?.map((v) => (
                 <TR key={v.id}>
-                  <TD className="font-bold">{v.plate}</TD>
-                  <TD className="font-body">{v.model}</TD>
-                  <TD className="font-body">{v.year ?? "—"}</TD>
-                  <TD className="font-body">
+                  <TD className="font-bold text-white">{v.plate}</TD>
+                  <TD className="font-body text-[#aaa]">{v.model}</TD>
+                  <TD className="font-body text-[#aaa]">{v.year ?? "—"}</TD>
+                  <TD className="font-body text-white">
                     {drivers.data?.items?.find((d) => d.id === v.driver_id)?.full_name || "—"}
                   </TD>
                   <TD>
                     <Badge variant={STATUS_TONE[v.status]}>{STATUS_LABELS[v.status]}</Badge>
                   </TD>
                   <TD className="text-right font-body">
-                    <button onClick={() => openEdit(v)} className="text-primary font-bold mr-md hover:underline">
+                    <button onClick={() => openEdit(v)} className="text-[hsl(217,91%,60%)] font-bold mr-md hover:underline">
                       Editar
                     </button>
                     <button
