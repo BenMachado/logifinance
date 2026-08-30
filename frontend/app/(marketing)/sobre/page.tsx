@@ -35,27 +35,6 @@ export default function SobrePage() {
             </p>
           </div>
         </div>
-
-        <div className="mt-20 rounded-2xl border border-[#222] overflow-hidden">
-          <div
-            className="h-[300px] md:h-[400px] bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url(https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1600&q=80)",
-            }}
-          />
-          <div className="p-8 md:p-12 bg-[#0a0a0a]">
-            <p className="text-sm text-[#666] font-mono uppercase tracking-widest">Transportadoras no Brasil</p>
-            <h3 className="mt-2 text-2xl font-bold tracking-tight font-heading">
-              Mais de 1 milhão de empresas operam com frota própria ou terceirizada.
-            </h3>
-            <p className="mt-4 text-[#aaa] leading-relaxed max-w-2xl">
-              O LogiFinance nasceu para atender esse mercado com uma ferramenta
-              que entende a realidade do operador: pedágio, diesel, motorista
-              autônomo, retorno vazio e prazo de pagamento do embarcador.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );
